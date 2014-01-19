@@ -1,0 +1,19 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+<!-- ACHTUNG: "commands" muss vor "ribbon" stehen!!! -->
+  <commands>
+    <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
+  </commands>
+  <ribbon>
+    <tabs>
+      <tab id="SpecialTab" label="Spezial">
+        <group id="HooksGroup" label="Hooks">
+          <button id="HooksSettingsButton"
+                  label="Einstellungen spezial"
+                  size="large"
+                  onAction="SettingsButtonAction"
+                  imageMso="AddInManager" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
