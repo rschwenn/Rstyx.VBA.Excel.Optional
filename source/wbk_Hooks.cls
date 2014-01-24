@@ -24,66 +24,87 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                      der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
 '                      (Der Speichern-unter-Dialog startet ohnehin dort).
 '                    - Einstellungsdialog in Register-Tab "Spezial"
+' 24.01.2014 v2.1  - Neu: Kontextmenüeintrag "Bedingte Formatierung"
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
 
-Private SyncWorkDir                         As SyncWorkDir
-Private blnEnableSyncWorkDir                As Boolean
-Private blnEnableSyncWorkDirInitialized     As Boolean
+Private SyncWorkDir                             As SyncWorkDir
+Private blnEnableSyncWorkDir                    As Boolean
+Private blnEnableSyncWorkDirInitialized         As Boolean
 
-Private blnEnableFileNewDirect              As Boolean
-Private blnEnableFileNewDirectInitialized   As Boolean
+Private blnEnableFileNewDirect                  As Boolean
+Private blnEnableFileNewDirectInitialized       As Boolean
+
+Private blnEnableConditionalFormat              As Boolean
+Private blnEnableConditionalFormatInitialized   As Boolean
 
 
-Private VBAHostNameVersion   As String
-Private AddInName            As String
+Private strVBAHostNameVersion   As String
+Private strAddInName            As String
 
 
 ' Initialisierung
 Private Sub Workbook_Open()
-    ' Umgebung
-    VBAHostNameVersion = Application.Name & " " & Application.Version
-    AddInName = ThisWorkbook.Name
-    
     ' Initialisierung der Klassen-Hooks.
-    If (Me.EnableSyncWorkDir) Then Call ActivateSyncWorkDir
+    'If (Me.EnableConditionalFormat) Then Call ActivateConditionalFormat
     'If (Me.EnableFileNewDirect) Then Call ActivateFileNewDirect
+    If (Me.EnableSyncWorkDir) Then Call ActivateSyncWorkDir
 End Sub
 
 
-' Region "SyncWorkDir" (Synchronisierung Arbeitsverz. mit dem Speicherort der aktiven Arbeitsmappe)
+' Region "Add-In Umgebung"
     
-    Public Property Get EnableSyncWorkDir() As Boolean
-        If (Not blnEnableSyncWorkDirInitialized) Then
-            On Error Resume Next
-            blnEnableSyncWorkDir = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableSyncWorkDir", EnableSyncWorkDirDefault))
-            On Error Goto 0
-            blnEnableSyncWorkDirInitialized = True
+    '(Toleranz gegenüber zwischenzeitlichem Abbruch des Add-Ins)
+    
+    Public Property Get VBAHostNameVersion() As String
+        If (strVBAHostNameVersion = "") Then
+            strVBAHostNameVersion = Application.Name & " " & Application.Version
         End If
-        EnableSyncWorkDir = blnEnableSyncWorkDir
+        VBAHostNameVersion = strVBAHostNameVersion
     End Property
     
-    Public Property Let EnableSyncWorkDir(NewValue As Boolean)
-        If (blnEnableSyncWorkDir Xor NewValue) Then
-            blnEnableSyncWorkDir = NewValue
+    Public Property Get AddInName() As String
+        If (strAddInName = "") Then
+            strAddInName = ThisWorkbook.Name
+        End If
+        AddInName = strAddInName
+    End Property
+'
+
+
+' Region "ConditionalFormat" (Kontextmenüeintrag "Bedingte Formatierung")
+    
+    Public Property Get EnableConditionalFormat() As Boolean
+        If (Not blnEnableConditionalFormatInitialized) Then
             On Error Resume Next
-            SaveSetting VBAHostNameVersion, AddInName, "EnableSyncWorkDir", CStr(blnEnableSyncWorkDir)
+            blnEnableConditionalFormat = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableConditionalFormat", EnableConditionalFormatDefault))
             On Error Goto 0
-            If (blnEnableSyncWorkDir) Then
-                Call ActivateSyncWorkDir()
+            blnEnableConditionalFormatInitialized = True
+        End If
+        EnableConditionalFormat = blnEnableConditionalFormat
+    End Property
+    
+    Public Property Let EnableConditionalFormat(NewValue As Boolean)
+        If (blnEnableConditionalFormat Xor NewValue) Then
+            blnEnableConditionalFormat = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableConditionalFormat", CStr(blnEnableConditionalFormat)
+            On Error Goto 0
+            If (blnEnableConditionalFormat) Then
+                Call ActivateConditionalFormat()
             Else
-                Call DeactivateSyncWorkDir()
+                Call DeactivateConditionalFormat()
             End If
         End If
     End Property
     
-    Private Sub ActivateSyncWorkDir()
-        Set SyncWorkDir = New SyncWorkDir
+    Private Sub ActivateConditionalFormat()
+        getRibbon().Invalidate
     End Sub
     
-    Private Sub DeactivateSyncWorkDir()
-        Set SyncWorkDir = Nothing
+    Private Sub DeactivateConditionalFormat()
+        getRibbon().Invalidate
     End Sub
 '
 
@@ -123,5 +144,40 @@ End Sub
     End Sub
 '
 
+
+' Region "SyncWorkDir" (Synchronisierung Arbeitsverz. mit dem Speicherort der aktiven Arbeitsmappe)
+    
+    Public Property Get EnableSyncWorkDir() As Boolean
+        If (Not blnEnableSyncWorkDirInitialized) Then
+            On Error Resume Next
+            blnEnableSyncWorkDir = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableSyncWorkDir", EnableSyncWorkDirDefault))
+            On Error Goto 0
+            blnEnableSyncWorkDirInitialized = True
+        End If
+        EnableSyncWorkDir = blnEnableSyncWorkDir
+    End Property
+    
+    Public Property Let EnableSyncWorkDir(NewValue As Boolean)
+        If (blnEnableSyncWorkDir Xor NewValue) Then
+            blnEnableSyncWorkDir = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableSyncWorkDir", CStr(blnEnableSyncWorkDir)
+            On Error Goto 0
+            If (blnEnableSyncWorkDir) Then
+                Call ActivateSyncWorkDir()
+            Else
+                Call DeactivateSyncWorkDir()
+            End If
+        End If
+    End Property
+    
+    Private Sub ActivateSyncWorkDir()
+        Set SyncWorkDir = New SyncWorkDir
+    End Sub
+    
+    Private Sub DeactivateSyncWorkDir()
+        Set SyncWorkDir = Nothing
+    End Sub
+'
 
 ' for jEdit:  :collapseFolds=1::tabSize=4::indentSize=4:

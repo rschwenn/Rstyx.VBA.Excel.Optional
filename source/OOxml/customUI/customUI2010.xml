@@ -1,8 +1,10 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
-<!-- ACHTUNG: "commands" muss vor "ribbon" stehen!!! -->
+  <!-- ACHTUNG: "commands" muss vor "ribbon" stehen!!! -->
+  
   <commands>
     <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
   </commands>
+  
   <ribbon>
     <tabs>
       <tab id="SpecialTab" label="Spezial">
@@ -16,4 +18,15 @@
       </tab>
     </tabs>
   </ribbon>
+  
+  <contextMenus>
+    <contextMenu idMso="ContextMenuCell">
+      <menuSeparator id="MySeparator" />
+      <button idMso="ConditionalFormattingsManage"
+              getVisible="getVisibleConditionalFormat"
+              label="Bedingte Formatierung"
+              insertBeforeMso="FormatCellsDialog" />
+    </contextMenu>
+  </contextMenus>
+  
 </customUI>

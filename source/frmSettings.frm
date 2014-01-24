@@ -17,15 +17,19 @@ Attribute VB_Exposed = False
 ' Modul frmSettings (Einstellungsdialog)
 '===============================================================================
 
+Option Explicit
+
 
 Private Sub UserForm_Initialize()
-    chkEnableFileNewDirect.Value = ThisWorkbook.EnableFileNewDirect
-    chkEnableSyncWorkDir.Value = ThisWorkbook.EnableSyncWorkDir
+    chkEnableConditionalFormat.Value    = ThisWorkbook.EnableConditionalFormat
+    chkEnableFileNewDirect.Value        = ThisWorkbook.EnableFileNewDirect
+    chkEnableSyncWorkDir.Value          = ThisWorkbook.EnableSyncWorkDir
 End Sub
 
 Private Sub btnOK_Click()
-    ThisWorkbook.EnableFileNewDirect = chkEnableFileNewDirect.Value
-    ThisWorkbook.EnableSyncWorkDir = chkEnableSyncWorkDir.Value
+    ThisWorkbook.EnableConditionalFormat    = chkEnableConditionalFormat.Value
+    ThisWorkbook.EnableFileNewDirect        = chkEnableFileNewDirect.Value
+    ThisWorkbook.EnableSyncWorkDir          = chkEnableSyncWorkDir.Value
     
     Unload Me
 End Sub
