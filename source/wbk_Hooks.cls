@@ -25,6 +25,7 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                      (Der Speichern-unter-Dialog startet ohnehin dort).
 '                    - Einstellungsdialog in Register-Tab "Spezial"
 ' 24.01.2014 v2.1  - Neu: Kontextmenüeintrag "Bedingte Formatierung"
+' 16.02.2014 v2.2  - Ribbon-Kode: Excel-weit eindeutige Routinenamen (Problemvermeidung)
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -100,11 +101,11 @@ End Sub
     End Property
     
     Private Sub ActivateConditionalFormat()
-        getRibbon().Invalidate
+        Call UpdateHooksRibbon
     End Sub
     
     Private Sub DeactivateConditionalFormat()
-        getRibbon().Invalidate
+        Call UpdateHooksRibbon
     End Sub
 '
 

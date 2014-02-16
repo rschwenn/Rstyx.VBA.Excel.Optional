@@ -1,12 +1,12 @@
 Attribute VB_Name = "Globals"
 '===============================================================================
-'Modul Globals                                                                  
+' Modul Globals                                                                  
 '===============================================================================
 
 Option Explicit
 
 
-Public Const AddInVersion   As String = "2.1"
+Public Const AddInVersion   As String = "2.2"
 
 ' Standard-Einstellungen
 Public Const EnableConditionalFormatDefault As Boolean = False
@@ -14,7 +14,7 @@ Public Const EnableFileNewDirectDefault     As Boolean = True
 Public Const EnableSyncWorkDirDefault       As Boolean = True
 
 
-Public oRibbon As IRibbonUI
+Private oRibbon As IRibbonUI
 
 
 ' Region "Referenz auf das Ribbon-Objekt"
@@ -23,23 +23,41 @@ Public oRibbon As IRibbonUI
     Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpDest As Any, lpSource As Any, ByVal cBytes&)
     
     ' Initialisierung der RibbonUI: Speichern einer Referenz auf das Ribbon-Objekt
-    ' und als Backup eines entsprechenden Integer-Zeigers in die Add-In-inerne Tabelle.
-    Public Sub OnRibbonLoad(ribbon As IRibbonUI)
+    ' und als Backup eines entsprechenden Integer-Zeigers in die Add-In-interne Tabelle.
+    Public Sub OnHooksRibbonLoad(ribbon As IRibbonUI)
         Set oRibbon = ribbon
         tabHooks.Range("A1").Value = ObjPtr(ribbon)
     End Sub
     
     ' Beziehen einer Referenz auf das Ribbon-Objekt (Sollte auch nach Fehler im Add-In funktionieren).
-    Function getRibbon() As IRibbonUI
-        
+    Function getHooksRibbon() As IRibbonUI
+        ' "oRibbon" ist normalerweise nur dann "Nothing", wenn das AddIn wegen eines Fehlers gestoppt wurde.
+        ' Dann kann der vorher gespeicherte Zeigert verwendet werden.
+        ' ABER: Wenn das AddIn nicht schreibgeschützt ist, kann der Zeiger auch veraltet sein.
+        '       => Dann stürzt Excel ab und nichts geht mehr.
         If (oRibbon Is Nothing) Then
-            Dim ribbonPointer As Long
-            ribbonPointer = tabHooks.Range("A1").Value
-            Call CopyMemory(oRibbon, ribbonPointer, 4)
+            If (ThisWorkbook.ReadOnly) Then
+                Dim ribbonPointer As Long
+                ribbonPointer = tabHooks.Range("A1").value
+                If (ribbonPointer > 0) Then
+                    On Error Resume Next  ' Nützt nix!
+                    Call CopyMemory(oRibbon, ribbonPointer, 4)
+                    On Error GoTo 0
+                End If
+            End If
         End If
         
-        Set getRibbon = oRibbon
+        Set getHooksRibbon = oRibbon
     End Function
+    
+    ' Status-Aktualisierung aller Ribbon-Steuerelemente erzwingen.
+    ' Falls das AddIn gestoopt wurde, impliziert diese Routine auch dessen Neustart
+    ' durch die Verwendung der Eigenschaft ThisWorkbook.AktiveTabelle...
+    Public Sub UpdateHooksRibbon()
+        On Error Resume Next
+        getHooksRibbon().Invalidate
+        On Error Goto 0
+    End Sub
     
 ' End Region
 

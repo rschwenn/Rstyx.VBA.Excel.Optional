@@ -11,6 +11,7 @@ Funktionen
    starten direkt der Dialog "Vorlage wählen" im Listenmodus.
  - Synchronisierung des Excel-Arbeitsverzeichnisses mit dem Speicherort
    der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
+ - Kontextmenü-Eintrag "Bedingte Formatierung"
 
 Zugriff auf die Steuerung des Add-Ins
 ---------------------------------------

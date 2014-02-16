@@ -20,7 +20,7 @@ End Sub
 Sub FileNewSmart()
     If (ThisWorkbook.EnableFileNewDirect) Then
         'On Error Resume Next
-        SendKeys "%2"
+        'SendKeys "%2"
         Application.Dialogs(xlDialogNew).Show
     Else
         Application.Workbooks.Add

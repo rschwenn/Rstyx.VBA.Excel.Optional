@@ -21,6 +21,7 @@ Option Explicit
 
 
 Private Sub UserForm_Initialize()
+    Me.Caption = "Einstellungen spezial (" & AddInVersion & ")"
     chkEnableConditionalFormat.Value    = ThisWorkbook.EnableConditionalFormat
     chkEnableFileNewDirect.Value        = ThisWorkbook.EnableFileNewDirect
     chkEnableSyncWorkDir.Value          = ThisWorkbook.EnableSyncWorkDir
