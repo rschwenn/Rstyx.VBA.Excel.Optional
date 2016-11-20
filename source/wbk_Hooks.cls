@@ -26,6 +26,8 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                    - Einstellungsdialog in Register-Tab "Spezial"
 ' 24.01.2014 v2.1  - Neu: Kontextmenüeintrag "Bedingte Formatierung"
 ' 16.02.2014 v2.2  - Ribbon-Kode: Excel-weit eindeutige Routinenamen (Problemvermeidung)
+' 20.11.2016 v2.3  - Bugfix: Synchronisierung des Excel-Arbeitsverzeichnisses arbeitet jetzt
+'                    auch mit UNC-Pfaden (bisher trat ein Fehler auf)
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit

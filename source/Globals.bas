@@ -6,7 +6,7 @@ Attribute VB_Name = "Globals"
 Option Explicit
 
 
-Public Const AddInVersion   As String = "2.2"
+Public Const AddInVersion   As String = "2.3"
 
 ' Standard-Einstellungen
 Public Const EnableConditionalFormatDefault As Boolean = False
@@ -32,7 +32,7 @@ Private oRibbon As IRibbonUI
     ' Beziehen einer Referenz auf das Ribbon-Objekt (Sollte auch nach Fehler im Add-In funktionieren).
     Function getHooksRibbon() As IRibbonUI
         ' "oRibbon" ist normalerweise nur dann "Nothing", wenn das AddIn wegen eines Fehlers gestoppt wurde.
-        ' Dann kann der vorher gespeicherte Zeigert verwendet werden.
+        ' Dann kann der vorher gespeicherte Zeiger verwendet werden.
         ' ABER: Wenn das AddIn nicht schreibgeschützt ist, kann der Zeiger auch veraltet sein.
         '       => Dann stürzt Excel ab und nichts geht mehr.
         If (oRibbon Is Nothing) Then

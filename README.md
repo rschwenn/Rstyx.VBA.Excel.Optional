@@ -8,7 +8,7 @@ Verhaltens von Excel 2010. Das Add-In wird über einen Einstellungsdialog gesteu
 Funktionen
 ----------
  - Die Tastenkombination STRG+N und die Standard-Aktion "Neue, leere Datei anlegen"
-   starten direkt der Dialog "Vorlage wählen" im Listenmodus.
+   entsprechen dem Menübefehl "Datei -> Neu -> Meine Vorlagen".
  - Synchronisierung des Excel-Arbeitsverzeichnisses mit dem Speicherort
    der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
  - Kontextmenü-Eintrag "Bedingte Formatierung"
@@ -23,4 +23,4 @@ Lizenz
 
 Abhängigkeiten
 --------------
- - Excel 2010
+ - Excel 2010 (nur x32)

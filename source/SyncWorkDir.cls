@@ -19,6 +19,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Private Declare Function SetCurrentDirectoryA Lib "kernel32" (ByVal lpPathName As String) As Long
+
 Dim WithEvents App    As Application
 
 Private Sub Class_Initialize()
@@ -29,6 +31,14 @@ Private Sub Class_Terminate()
     Set App = Nothing
 End Sub
 
+' Setzt das Arbeitsverzeichnis (auch für UNC-Pfade).
+Private Sub SetCurrentDirectory(Path As String)
+    Dim lReturn As Long
+    lReturn = SetCurrentDirectoryA(Path)
+    'If lReturn = 0 Then 
+    '    MsgBox "Error setting path"
+    'End If
+End Sub
 
 ' Reaktion auf das Aktivieren einer Arbeitsmappe.
 Private Sub App_WorkbookActivate(ByVal Wb As Excel.Workbook)
@@ -42,8 +52,9 @@ Private Sub App_WorkbookActivate(ByVal Wb As Excel.Workbook)
             WorkbookDir = WorkbookDir & Application.PathSeparator
         End If
         ' Arbeitsverzeichnis ändern.
-        ChDrive WorkbookDir
-        ChDir WorkbookDir
+        'ChDrive WorkbookDir
+        'ChDir WorkbookDir
+        SetCurrentDirectory WorkbookDir
     End If
     On Error GoTo 0
 End Sub
