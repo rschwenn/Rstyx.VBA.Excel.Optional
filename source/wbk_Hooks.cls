@@ -28,6 +28,7 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 ' 16.02.2014 v2.2  - Ribbon-Kode: Excel-weit eindeutige Routinenamen (Problemvermeidung)
 ' 20.11.2016 v2.3  - Bugfix: Synchronisierung des Excel-Arbeitsverzeichnisses arbeitet jetzt
 '                    auch mit UNC-Pfaden (bisher trat ein Fehler auf)
+' 30.11.2016 v2.4  - Neu: PDF-Export per Tastenkürzel "STRG+UMSCHALT+p".
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -42,6 +43,9 @@ Private blnEnableFileNewDirectInitialized       As Boolean
 Private blnEnableConditionalFormat              As Boolean
 Private blnEnableConditionalFormatInitialized   As Boolean
 
+Private blnEnableSaveAsPDF                      As Boolean
+Private blnEnableSaveAsPDFInitialized           As Boolean
+
 
 Private strVBAHostNameVersion   As String
 Private strAddInName            As String
@@ -53,6 +57,7 @@ Private Sub Workbook_Open()
     'If (Me.EnableConditionalFormat) Then Call ActivateConditionalFormat
     'If (Me.EnableFileNewDirect) Then Call ActivateFileNewDirect
     If (Me.EnableSyncWorkDir) Then Call ActivateSyncWorkDir
+    If (Me.EnableSaveAsPDF)   Then Call ActivateSaveAsPDF
 End Sub
 
 
@@ -180,6 +185,42 @@ End Sub
     
     Private Sub DeactivateSyncWorkDir()
         Set SyncWorkDir = Nothing
+    End Sub
+'
+
+
+' Region "SaveAsPDF" (Tastenkürzel "STRG+UMSCHALT+p" startet den Dialog "Als PDF veröffentlichen")
+    
+    Public Property Get EnableSaveAsPDF() As Boolean
+        If (Not blnEnableSaveAsPDFInitialized) Then
+            On Error Resume Next
+            blnEnableSaveAsPDF = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableSaveAsPDF", EnableSaveAsPDFDefault))
+            On Error Goto 0
+            blnEnableSaveAsPDFInitialized = True
+        End If
+        EnableSaveAsPDF = blnEnableSaveAsPDF
+    End Property
+    
+    Public Property Let EnableSaveAsPDF(NewValue As Boolean)
+        If (blnEnableSaveAsPDF Xor NewValue) Then
+            blnEnableSaveAsPDF = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableSaveAsPDF", CStr(blnEnableSaveAsPDF)
+            On Error Goto 0
+            If (blnEnableSaveAsPDF) Then
+                Call ActivateSaveAsPDF()
+            Else
+                Call DeactivateSaveAsPDF()
+            End If
+        End If
+    End Property
+    
+    Private Sub ActivateSaveAsPDF()
+        Call AssignSaveAsPDFShortcut
+    End Sub
+    
+    Private Sub DeactivateSaveAsPDF()
+        Call ResetSaveAsPDFShortcut
     End Sub
 '
 

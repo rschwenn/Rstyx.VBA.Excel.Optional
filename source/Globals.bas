@@ -6,12 +6,13 @@ Attribute VB_Name = "Globals"
 Option Explicit
 
 
-Public Const AddInVersion   As String = "2.3"
+Public Const AddInVersion   As String = "2.4"
 
 ' Standard-Einstellungen
 Public Const EnableConditionalFormatDefault As Boolean = False
 Public Const EnableFileNewDirectDefault     As Boolean = True
 Public Const EnableSyncWorkDirDefault       As Boolean = True
+Public Const EnableSaveAsPDFDefault         As Boolean = True
 
 
 Private oRibbon As IRibbonUI

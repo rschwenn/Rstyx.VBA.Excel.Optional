@@ -2,7 +2,7 @@ Rstyx.VBA.Excel.Hooks
 =====================
 
 Dieses Add-In für Excel 2010 bietet kleine, optionale Anpassungen der Oberfläche und des 
-Verhaltens von Excel 2010. Das Add-In wird über einen Einstellungsdialog gesteuert
+Verhaltens von Excel 2010. Das Add-In wird über einen Einstellungsdialog gesteuert.
 
 
 Funktionen
@@ -12,6 +12,7 @@ Funktionen
  - Synchronisierung des Excel-Arbeitsverzeichnisses mit dem Speicherort
    der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
  - Kontextmenü-Eintrag "Bedingte Formatierung"
+ - PDF-Export per Tastenkürzel "STRG+UMSCHALT+p".
 
 Zugriff auf die Steuerung des Add-Ins
 ---------------------------------------

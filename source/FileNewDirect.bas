@@ -10,7 +10,7 @@ Attribute VB_Name = "FileNewDirect"
 
 Option Explicit
 
-' Umgeleiteter Standard-Befehl
+' Umgeleiteter Standard-Befehl (siehe customUI2010.xml)
 Sub FromFileNewDefault(ByVal control As IRibbonControl, ByRef cancelDefault)
     cancelDefault = True
     Call FileNewSmart
