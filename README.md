@@ -1,21 +1,20 @@
 Rstyx.VBA.Excel.Hooks
 =====================
 
-Dieses Add-In für Excel 2010 bietet kleine, optionale Anpassungen der Oberfläche und des 
-Verhaltens von Excel 2010. Das Add-In wird über einen Einstellungsdialog gesteuert.
+Dieses Add-In für Excel 2016 x64 bietet kleine, optionale Anpassungen der Oberfläche und des 
+Verhaltens von Excel 2016. Das Add-In wird über einen Einstellungsdialog gesteuert.
 
 
 Funktionen
 ----------
- - Die Tastenkombination STRG+N und die Standard-Aktion "Neue, leere Datei anlegen"
-   entsprechen dem Menübefehl "Datei -> Neu -> Meine Vorlagen".
- - Synchronisierung des Excel-Arbeitsverzeichnisses mit dem Speicherort
-   der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
+ - Klassischer "Datei Neu"-Dialog per Tastenkürzel "STRG+UMSCHALT+n"
+   sowie Knopf "Neu (Dialog)" im Backoffice.
+ - Klassischer "Datei Öffnen"-Dialog per Tastenkürzel "STRG+UMSCHALT+o"
+ - "Speichern als PDF"-Dialog per Tastenkürzel "STRG+UMSCHALT+p".
  - Kontextmenü-Eintrag "Bedingte Formatierung"
- - PDF-Export per Tastenkürzel "STRG+UMSCHALT+p".
 
-Zugriff auf die Steuerung des Add-Ins
----------------------------------------
+Zugriff auf die Optionen des Add-Ins
+------------------------------------
  - Einstellungsdialog in Register-Tab "Spezial"
 
 Lizenz
@@ -24,4 +23,4 @@ Lizenz
 
 Abhängigkeiten
 --------------
- - Excel 2010 (nur x32)
+ - Excel 2016 bzw. Excel 395 (nur x64)

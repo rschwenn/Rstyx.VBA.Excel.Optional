@@ -19,7 +19,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Declare Function SetCurrentDirectoryA Lib "kernel32" (ByVal lpPathName As String) As Long
+Private Declare PtrSafe Function SetCurrentDirectoryA Lib "kernel32" (ByVal lpPathName As String) As Long
 
 Dim WithEvents App    As Application
 

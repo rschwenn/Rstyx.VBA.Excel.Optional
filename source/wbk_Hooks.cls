@@ -29,6 +29,12 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 ' 20.11.2016 v2.3  - Bugfix: Synchronisierung des Excel-Arbeitsverzeichnisses arbeitet jetzt
 '                    auch mit UNC-Pfaden (bisher trat ein Fehler auf)
 ' 30.11.2016 v2.4  - Neu: PDF-Export per Tastenkürzel "STRG+UMSCHALT+p".
+' 11.05.2020 v3.0  - Umstellung auf 64 bit und Office 2016.
+'                  - Synchronisierung des Excel-Arbeitsverzeichnisses aufgegeben.
+'                    (scheint nun Excel-Standard zu sein wegen SDI)
+'                  - FileNewDirect ersetzt durch FileNewShortcut und FileNewButton.
+'                    (Die Standardaktion "Datei -> Neu..." wird nicht mehr abgefangen)
+'                  - Neu: FileNewOpenShortcut
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -37,8 +43,14 @@ Private SyncWorkDir                             As SyncWorkDir
 Private blnEnableSyncWorkDir                    As Boolean
 Private blnEnableSyncWorkDirInitialized         As Boolean
 
-Private blnEnableFileNewDirect                  As Boolean
-Private blnEnableFileNewDirectInitialized       As Boolean
+Private blnEnableFileNewShortcut                As Boolean
+Private blnEnableFileNewShortcutInitialized     As Boolean
+
+Private blnEnableFileNewButton                  As Boolean
+Private blnEnableFileNewButtonInitialized       As Boolean
+
+Private blnEnableFileOpenShortcut               As Boolean
+Private blnEnableFileOpenShortcutInitialized    As Boolean
 
 Private blnEnableConditionalFormat              As Boolean
 Private blnEnableConditionalFormatInitialized   As Boolean
@@ -54,10 +66,12 @@ Private strAddInName            As String
 ' Initialisierung
 Private Sub Workbook_Open()
     ' Initialisierung der Klassen-Hooks.
-    'If (Me.EnableConditionalFormat) Then Call ActivateConditionalFormat
-    'If (Me.EnableFileNewDirect) Then Call ActivateFileNewDirect
-    If (Me.EnableSyncWorkDir) Then Call ActivateSyncWorkDir
-    If (Me.EnableSaveAsPDF)   Then Call ActivateSaveAsPDF
+    If (Me.EnableConditionalFormat) Then Call ActivateConditionalFormat
+    If (Me.EnableFileNewButton)     Then Call ActivateFileNewButton
+    If (Me.EnableFileNewShortcut)   Then Call ActivateFileNewShortcut
+    If (Me.EnableFileOpenShortcut)  Then Call ActivateFileOpenShortcut
+    If (Me.EnableSaveAsPDF)         Then Call ActivateSaveAsPDF
+    'If (Me.EnableSyncWorkDir)       Then Call ActivateSyncWorkDir
 End Sub
 
 
@@ -117,38 +131,111 @@ End Sub
 '
 
 
-' Region "FileNewDirect" ("Datei -> Neu..." führt direkt zum Vorlagendialog)
+' Region "FileNewDialog" (klassischer Vorlagendialog)
     
-    Public Property Get EnableFileNewDirect() As Boolean
-        If (Not blnEnableFileNewDirectInitialized) Then
+    ' Shortcut
+    
+    Public Property Get EnableFileNewShortcut() As Boolean
+        If (Not blnEnableFileNewShortcutInitialized) Then
             On Error Resume Next
-            blnEnableFileNewDirect = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableFileNewDirect", EnableFileNewDirectDefault))
+            blnEnableFileNewShortcut = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableFileNewShortcut", EnableFileNewShortcutDefault))
             On Error Goto 0
-            blnEnableFileNewDirectInitialized = True
+            blnEnableFileNewShortcutInitialized = True
         End If
-        EnableFileNewDirect = blnEnableFileNewDirect
+        EnableFileNewShortcut = blnEnableFileNewShortcut
     End Property
     
-    Public Property Let EnableFileNewDirect(NewValue As Boolean)
-        If (blnEnableFileNewDirect Xor NewValue) Then
-            blnEnableFileNewDirect = NewValue
+    Public Property Let EnableFileNewShortcut(NewValue As Boolean)
+        If (blnEnableFileNewShortcut Xor NewValue) Then
+            blnEnableFileNewShortcut = NewValue
             On Error Resume Next
-            SaveSetting VBAHostNameVersion, AddInName, "EnableFileNewDirect", CStr(blnEnableFileNewDirect)
+            SaveSetting VBAHostNameVersion, AddInName, "EnableFileNewShortcut", CStr(blnEnableFileNewShortcut)
             On Error Goto 0
-            If (blnEnableFileNewDirect) Then
-                Call ActivateFileNewDirect()
+            If (blnEnableFileNewShortcut) Then
+                Call ActivateFileNewShortcut()
             Else
-                Call DeactivateFileNewDirect()
+                Call DeactivateFileNewShortcut()
             End If
         End If
     End Property
     
-    Private Sub ActivateFileNewDirect()
-        'Set FileNewDirect = New FileNewDirect
+    Private Sub ActivateFileNewShortcut()
+        Call AssignFileNewShortcut()
     End Sub
     
-    Private Sub DeactivateFileNewDirect()
-        'Set FileNewDirect = Nothing
+    Private Sub DeactivateFileNewShortcut()
+        Call ResetFileNewShortcut()
+    End Sub
+    
+    
+    ' Back Office Button.
+    
+    Public Property Get EnableFileNewButton() As Boolean
+        If (Not blnEnableFileNewButtonInitialized) Then
+            On Error Resume Next
+            blnEnableFileNewButton = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableFileNewButton", EnableFileNewButtonDefault))
+            On Error Goto 0
+            blnEnableFileNewButtonInitialized = True
+        End If
+        EnableFileNewButton = blnEnableFileNewButton
+    End Property
+    
+    Public Property Let EnableFileNewButton(NewValue As Boolean)
+        If (blnEnableFileNewButton Xor NewValue) Then
+            blnEnableFileNewButton = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableFileNewButton", CStr(blnEnableFileNewButton)
+            On Error Goto 0
+            If (blnEnableFileNewButton) Then
+                Call ActivateFileNewButton()
+            Else
+                Call DeactivateFileNewButton()
+            End If
+        End If
+    End Property
+    
+    Private Sub ActivateFileNewButton()
+        Call UpdateHooksRibbon
+    End Sub
+    
+    Private Sub DeactivateFileNewButton()
+        Call UpdateHooksRibbon
+    End Sub
+'
+
+
+' Region "FileOpenDialog" (klassischer Öffnen-Dialog)
+    
+    Public Property Get EnableFileOpenShortcut() As Boolean
+        If (Not blnEnableFileOpenShortcutInitialized) Then
+            On Error Resume Next
+            blnEnableFileOpenShortcut = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableFileOpenShortcut", EnableFileOpenShortcutDefault))
+            On Error Goto 0
+            blnEnableFileOpenShortcutInitialized = True
+        End If
+        EnableFileOpenShortcut = blnEnableFileOpenShortcut
+    End Property
+    
+    Public Property Let EnableFileOpenShortcut(NewValue As Boolean)
+        If (blnEnableFileOpenShortcut Xor NewValue) Then
+            blnEnableFileOpenShortcut = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableFileOpenShortcut", CStr(blnEnableFileOpenShortcut)
+            On Error Goto 0
+            If (blnEnableFileOpenShortcut) Then
+                Call ActivateFileOpenShortcut()
+            Else
+                Call DeactivateFileOpenShortcut()
+            End If
+        End If
+    End Property
+    
+    Private Sub ActivateFileOpenShortcut()
+        Call AssignFileOpenShortcut()
+    End Sub
+    
+    Private Sub DeactivateFileOpenShortcut()
+        Call ResetFileOpenShortcut()
     End Sub
 '
 
@@ -224,4 +311,4 @@ End Sub
     End Sub
 '
 
-' for jEdit:  :collapseFolds=1::tabSize=4::indentSize=4:
+' for jEdit:  :collapseFolds=2::tabSize=4::indentSize=4:
