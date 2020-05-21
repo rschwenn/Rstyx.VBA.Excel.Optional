@@ -21,7 +21,7 @@ Option Explicit
 
 
 Private Sub UserForm_Initialize()
-    Me.Caption = "Einstellungen spezial (" & AddInVersion & ")"
+    Me.Caption = "Optional (" & AddInVersion & ")"
     chkEnableConditionalFormat.Value = ThisWorkbook.EnableConditionalFormat
     chkEnableFileNewShortcut.Value = ThisWorkbook.EnableFileNewShortcut
     chkEnableFileNewButton.Value = ThisWorkbook.EnableFileNewButton

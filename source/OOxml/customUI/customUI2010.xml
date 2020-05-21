@@ -1,16 +1,15 @@
-<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="OnHooksRibbonLoad">
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="OnOptionalRibbonLoad">
   <!-- ACHTUNG: "commands" muss vor "ribbon" stehen!!! -->
   
   <!--<commands>
     <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
   </commands>-->
   
-  <!-- Excel 2010 -->
   <!--<ribbon>
     <tabs>
       <tab id="SpecialTab" label="Spezial">
-        <group id="HooksGroup" label="Hooks">
-          <button id="HooksSettingsButton"
+        <group id="OptionalGroup" label="Optional">
+          <button id="OptionalSettingsButton"
                   label="Einstellungen spezial"
                   size="large"
                   onAction="SettingsButtonAction"
@@ -29,7 +28,7 @@
             isDefinitive="true"
             insertBeforeMso="TabOfficeStart" />
             
-    <button id="HooksSettingsButton"
+    <button id="OptionalSettingsButton"
             label="Optional"
             onAction="SettingsButtonAction"
             imageMso="AddInManager"

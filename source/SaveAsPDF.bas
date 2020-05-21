@@ -2,7 +2,7 @@ Attribute VB_Name = "SaveAsPDF"
 '---------------------------------------------------------------------------------------------------
 ' SaveAsPDF.bas (Robert Schwenn)
 ' 
-' Das Makro "Hooks.SaveAsPDF.SaveAsPDFDialog" startet den Dialog "Als PDF veröffentlichen".
+' Das Makro "Optional.SaveAsPDF.SaveAsPDFDialog" startet den Dialog "Als PDF veröffentlichen".
 ' Diesem Makro kann mit den anderen beiden Makros ***SaveAsPDFShortcut()
 ' das Tastenkürzel "STRG+UMSCHALT+p" zugewiesen bzw. entzogen werden.
 '---------------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Sub SaveAsPDFDialog()
     
     ' Alternative: PDF-Export ohne jede Nachfrage (überschreibt vorhandene PDF)
     'ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF,  _
-        'Filename:="X:\Quellen\VBA\Excel\Hooks\source\Hooks_Test.pdf",  _
+        'Filename:="X:\Quellen\VBA\Excel\Optional\source\Optional_Test.pdf",  _
         'Quality:=xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:=True
 End Sub
 

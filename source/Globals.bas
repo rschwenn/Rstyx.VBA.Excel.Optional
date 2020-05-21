@@ -6,7 +6,7 @@ Attribute VB_Name = "Globals"
 Option Explicit
 
 
-Public Const AddInVersion   As String = "3.0"
+Public Const AddInVersion   As String = "3.1"
 
 ' Standard-Einstellungen
 Public Const EnableConditionalFormatDefault As Boolean = False
@@ -26,13 +26,13 @@ Private oRibbon As IRibbonUI
     
     ' Initialisierung der RibbonUI: Speichern einer Referenz auf das Ribbon-Objekt
     ' und als Backup eines entsprechenden Integer-Zeigers in die Add-In-interne Tabelle.
-    Public Sub OnHooksRibbonLoad(ribbon As IRibbonUI)
+    Public Sub OnOptionalRibbonLoad(ribbon As IRibbonUI)
         Set oRibbon = ribbon
-        tabHooks.Range("A1").Value = ObjPtr(ribbon)
+        tabOptional.Range("A1").Value = ObjPtr(ribbon)
     End Sub
     
     ' Beziehen einer Referenz auf das Ribbon-Objekt (Sollte auch nach Fehler im Add-In funktionieren).
-    Function getHooksRibbon() As IRibbonUI
+    Function getOptionalRibbon() As IRibbonUI
         ' "oRibbon" ist normalerweise nur dann "Nothing", wenn das AddIn wegen eines Fehlers gestoppt wurde.
         ' Dann kann der vorher gespeicherte Zeiger verwendet werden.
         ' ABER: Wenn das AddIn nicht schreibgeschützt ist, kann der Zeiger auch veraltet sein.
@@ -40,7 +40,7 @@ Private oRibbon As IRibbonUI
         If (oRibbon Is Nothing) Then
             If (ThisWorkbook.ReadOnly) Then
                 Dim ribbonPointer As LongPtr
-                ribbonPointer = tabHooks.Range("A1").value
+                ribbonPointer = tabOptional.Range("A1").value
                 If (ribbonPointer > 0) Then
                     On Error Resume Next  ' Nützt nix!
                     Call CopyMemory(oRibbon, ribbonPointer, LenB(ribbonPointer))
@@ -49,13 +49,13 @@ Private oRibbon As IRibbonUI
             End If
         End If
         
-        Set getHooksRibbon = oRibbon
+        Set getOptionalRibbon = oRibbon
     End Function
     
     ' Status-Aktualisierung aller Ribbon-Steuerelemente erzwingen.
-    Public Sub UpdateHooksRibbon()
+    Public Sub UpdateOptionalRibbon()
         On Error Resume Next
-        getHooksRibbon().Invalidate
+        getOptionalRibbon().Invalidate
         On Error Goto 0
     End Sub
     

@@ -1,5 +1,5 @@
-Rstyx.VBA.Excel.Hooks
-=====================
+Rstyx.VBA.Excel.Optional
+========================
 
 Dieses Add-In für Excel 2016 x64 bietet kleine, optionale Anpassungen der Oberfläche und des 
 Verhaltens von Excel 2016. Das Add-In wird über einen Einstellungsdialog gesteuert.
@@ -15,7 +15,7 @@ Funktionen
 
 Zugriff auf die Optionen des Add-Ins
 ------------------------------------
- - Einstellungsdialog in Register-Tab "Spezial"
+ - Einstellungsdialog "Optional" im Datei-Menü (Backoffice)
 
 Lizenz
 -------

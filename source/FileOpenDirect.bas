@@ -2,7 +2,7 @@ Attribute VB_Name = "FileOpenDirect"
 '---------------------------------------------------------------------------------------------------
 ' FileOpenDirect.bas (Robert Schwenn)
 ' 
-' Das Makro "Hooks.FileOpenDirect.FileOpenDialog" startet den klassischen Dialog "Datei Öffnen".
+' Das Makro "Optional.FileOpenDirect.FileOpenDialog" startet den klassischen Dialog "Datei Öffnen".
 ' Diesem Makro kann mit den anderen beiden Makros ***FileOpenShortcut()
 ' das Tastenkürzel "STRG+UMSCHALT+o" zugewiesen bzw. entzogen werden.
 '---------------------------------------------------------------------------------------------------

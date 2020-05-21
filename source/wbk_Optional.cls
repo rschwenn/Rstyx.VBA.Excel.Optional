@@ -2,14 +2,14 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "wbk_Hooks"
+Attribute VB_Name = "wbk_Optional"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Attribute cbbFileNew.VB_VarHelpID = -1
 '---------------------------------------------------------------------------------------------------
-' wbk_Hooks.cls (Robert Schwenn)
+' wbk_Optional.cls (Robert Schwenn)
 ' 
 ' 24.11.2008 v1.0  Der Menüpunkt "Datei -> Neu..." wird hier verarbeitet:
 '                    Statt den Aufgabenbereich anzuzeigen, startet direkt der
@@ -35,6 +35,7 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                  - FileNewDirect ersetzt durch FileNewShortcut und FileNewButton.
 '                    (Die Standardaktion "Datei -> Neu..." wird nicht mehr abgefangen)
 '                  - Neu: FileNewOpenShortcut
+' 21.05.2020 v3.1  - Add-In umbenannt von "Hooks" nach "Optional"
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -65,7 +66,7 @@ Private strAddInName            As String
 
 ' Initialisierung
 Private Sub Workbook_Open()
-    ' Initialisierung der Klassen-Hooks.
+    ' Initialisierung der Klassen.
     If (Me.EnableConditionalFormat) Then Call ActivateConditionalFormat
     If (Me.EnableFileNewButton)     Then Call ActivateFileNewButton
     If (Me.EnableFileNewShortcut)   Then Call ActivateFileNewShortcut
@@ -122,11 +123,11 @@ End Sub
     End Property
     
     Private Sub ActivateConditionalFormat()
-        Call UpdateHooksRibbon
+        Call UpdateOptionalRibbon
     End Sub
     
     Private Sub DeactivateConditionalFormat()
-        Call UpdateHooksRibbon
+        Call UpdateOptionalRibbon
     End Sub
 '
 
@@ -195,11 +196,11 @@ End Sub
     End Property
     
     Private Sub ActivateFileNewButton()
-        Call UpdateHooksRibbon
+        Call UpdateOptionalRibbon
     End Sub
     
     Private Sub DeactivateFileNewButton()
-        Call UpdateHooksRibbon
+        Call UpdateOptionalRibbon
     End Sub
 '
 

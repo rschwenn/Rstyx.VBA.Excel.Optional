@@ -2,7 +2,7 @@ Attribute VB_Name = "FileNewDirect"
 '---------------------------------------------------------------------------------------------------
 ' FileNewDirect.bas (Robert Schwenn)
 ' 
-' Das Makro "Hooks.FileNewDirect.FileNewDialog" startet den klassischen Dialog "Datei Neu".
+' Das Makro "Optional.FileNewDirect.FileNewDialog" startet den klassischen Dialog "Datei Neu".
 ' Diesem Makro kann mit den anderen beiden Makros ***FileNewShortcut()
 ' das Tastenkürzel "STRG+UMSCHALT+p" zugewiesen bzw. entzogen werden.
 ' 
