@@ -5,7 +5,8 @@
     <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
   </commands>-->
   
-  <ribbon>
+  <!-- Excel 2010 -->
+  <!--<ribbon>
     <tabs>
       <tab id="SpecialTab" label="Spezial">
         <group id="HooksGroup" label="Hooks">
@@ -17,7 +18,7 @@
         </group>
       </tab>
     </tabs>
-  </ribbon>
+  </ribbon>-->
   
   <backstage>
     <button id="FileNewDialogButton"
@@ -27,6 +28,13 @@
             imageMso="FileNewDialogClassic" 
             isDefinitive="true"
             insertBeforeMso="TabOfficeStart" />
+            
+    <button id="HooksSettingsButton"
+            label="Optional"
+            onAction="SettingsButtonAction"
+            imageMso="AddInManager"
+            keytip="p"
+            isDefinitive="true" />
   </backstage>
   
   <contextMenus>
