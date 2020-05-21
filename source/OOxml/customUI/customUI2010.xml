@@ -1,49 +1,122 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="OnOptionalRibbonLoad">
-  <!-- ACHTUNG: "commands" muss vor "ribbon" stehen!!! -->
-  
-  <!--<commands>
-    <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
-  </commands>-->
-  
-  <!--<ribbon>
-    <tabs>
-      <tab id="SpecialTab" label="Spezial">
-        <group id="OptionalGroup" label="Optional">
-          <button id="OptionalSettingsButton"
-                  label="Einstellungen spezial"
-                  size="large"
-                  onAction="SettingsButtonAction"
-                  imageMso="AddInManager" />
-        </group>
-      </tab>
-    </tabs>
-  </ribbon>-->
-  
-  <backstage>
-    <button id="FileNewDialogButton"
-            label="Neu (Dialog)" 
-            getVisible="getVisibleFileNewButton"
-            onAction="FileNewButtonAction" 
-            imageMso="FileNewDialogClassic" 
-            isDefinitive="true"
-            insertBeforeMso="TabOfficeStart" />
-            
-    <button id="OptionalSettingsButton"
-            label="Optional"
-            onAction="SettingsButtonAction"
-            imageMso="AddInManager"
-            keytip="p"
-            isDefinitive="true" />
-  </backstage>
-  
-  <contextMenus>
-    <contextMenu idMso="ContextMenuCell">
-      <menuSeparator id="MySeparator" />
-      <button idMso="ConditionalFormattingsManage"
-              getVisible="getVisibleConditionalFormat"
-              label="Bedingte Formatierung"
-              insertBeforeMso="FormatCellsDialog" />
-    </contextMenu>
-  </contextMenus>
-  
+    <!-- ACHTUNG Reihenfolge: "commands", "ribbon", "backstage", "contextMenus" -->
+    
+    <!--<commands>
+        <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
+    </commands>-->
+    
+    <!--<ribbon>
+        <tabs>
+            <tab id="SpecialTab" label="Spezial">
+                <group id="OptionalGroup" label="Optional">
+                    <button id="OptionalSettingsButton"
+                            label="Einstellungen spezial"
+                            size="large"
+                            onAction="SettingsButtonAction"
+                            imageMso="AddInManager" />
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>-->
+    
+    <backstage>
+        <button id="FileNewDialogButton"
+                label="Neu (Dialog)" 
+                getVisible="getVisibleFileNewButton"
+                onAction="FileNewButtonAction" 
+                imageMso="FileNewDialogClassic" 
+                isDefinitive="true"
+                insertBeforeMso="TabOfficeStart"
+        />
+                
+        <!--<button id="OptionalSettingsButton"
+                    label="Optional"
+                    onAction="SettingsButtonAction"
+                    imageMso="AddInManager"
+                    keytip="p"
+                    isDefinitive="true"
+        />-->
+                
+        <tab id="OptionalTab"
+             label="Optional"
+             keytip="p"
+            >
+            <firstColumn >
+                
+                <group id="HeaderGroup" label="Optional Add-In">
+                    <topItems>
+                        <labelControl id="VersionLabel" label="Version 3.1" />
+                        <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente" />
+                    </topItems>
+                </group>
+                
+                <group id="ShortcutsGroup" label="Tastenkürzel" >
+                    <topItems>
+                        
+                        <checkBox id="EnableFileNewShortcutCheckbox"
+                                  label="STRG+UMSCHALT+N =&gt;  Klassischer &quot;Datei-&gt;Neu&quot;-Dialog"
+                                  onAction="OptionalCheckboxAction"
+                                  getPressed="OptionalCheckboxGetPressed"
+                                  keytip="n"
+                                  />
+                        
+                        <checkBox id="EnableFileOpenShortcutCheckbox"
+                                  label="STRG+UMSCHALT+O =&gt;  Klassischer &quot;Datei-&gt;Öffnen&quot;-Dialog"
+                                  onAction="OptionalCheckboxAction"
+                                  getPressed="OptionalCheckboxGetPressed"
+                                  keytip="o"
+                                  />
+                        
+                        <checkBox id="EnableSaveAsPDFCheckbox"
+                                  label="STRG+UMSCHALT+P =&gt;  &quot;Speichern als PDF&quot;-Dialog"
+                                  onAction="OptionalCheckboxAction"
+                                  getPressed="OptionalCheckboxGetPressed"
+                                  keytip="p"
+                                  />
+                    </topItems>
+                </group>
+                
+                <group id="GUIGroup" label="Grafische Oberfläche" >
+                    <topItems>
+                        
+                        <checkBox id="EnableConditionalFormatCheckbox"
+                                  label="Zellen-Kontextmenü: Eintrag für &quot;Bedingte Formatierung&quot;"
+                                  onAction="OptionalCheckboxAction"
+                                  getPressed="OptionalCheckboxGetPressed"
+                                  keytip="b"
+                                  />
+                        
+                        <checkBox id="EnableFileNewButtonCheckbox"
+                                  label="Datei-Menü: Knopf &quot;Neu (Dialog)&quot; für klassischen &quot;Datei->Neu&quot;-Dialog"
+                                  onAction="OptionalCheckboxAction"
+                                  getPressed="OptionalCheckboxGetPressed"
+                                  keytip="d"
+                                  />
+                    </topItems>
+                </group>
+                
+                <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
+                    <topItems>
+                        <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
+                        <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ + W + ENTER (nacheinander drücken)" />
+                        <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
+                    </topItems>
+                </group>
+                
+            </firstColumn>            
+        </tab>
+    </backstage>
+    
+    <contextMenus>
+        <contextMenu idMso="ContextMenuCell">
+            <menuSeparator id="MySeparator" />
+            <button idMso="ConditionalFormattingsManage"
+                    getVisible="getVisibleConditionalFormat"
+                    label="Bedingte Formatierung"
+                    insertBeforeMso="FormatCellsDialog" />
+        </contextMenu>
+    </contextMenus>
+    
 </customUI>
+
+<!-- for jEdit:  :collapseFolds=3::tabSize=4::indentSize=4: -->

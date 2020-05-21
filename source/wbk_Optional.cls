@@ -36,13 +36,11 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                    (Die Standardaktion "Datei -> Neu..." wird nicht mehr abgefangen)
 '                  - Neu: FileNewOpenShortcut
 ' 21.05.2020 v3.1  - Add-In umbenannt von "Hooks" nach "Optional"
+'                  - Oberfläche jetzt im Backoffice als Tab => Dialog entfernt.
+'                  - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
-
-Private SyncWorkDir                             As SyncWorkDir
-Private blnEnableSyncWorkDir                    As Boolean
-Private blnEnableSyncWorkDirInitialized         As Boolean
 
 Private blnEnableFileNewShortcut                As Boolean
 Private blnEnableFileNewShortcutInitialized     As Boolean
@@ -72,7 +70,6 @@ Private Sub Workbook_Open()
     If (Me.EnableFileNewShortcut)   Then Call ActivateFileNewShortcut
     If (Me.EnableFileOpenShortcut)  Then Call ActivateFileOpenShortcut
     If (Me.EnableSaveAsPDF)         Then Call ActivateSaveAsPDF
-    'If (Me.EnableSyncWorkDir)       Then Call ActivateSyncWorkDir
 End Sub
 
 
@@ -237,42 +234,6 @@ End Sub
     
     Private Sub DeactivateFileOpenShortcut()
         Call ResetFileOpenShortcut()
-    End Sub
-'
-
-
-' Region "SyncWorkDir" (Synchronisierung Arbeitsverz. mit dem Speicherort der aktiven Arbeitsmappe)
-    
-    Public Property Get EnableSyncWorkDir() As Boolean
-        If (Not blnEnableSyncWorkDirInitialized) Then
-            On Error Resume Next
-            blnEnableSyncWorkDir = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableSyncWorkDir", EnableSyncWorkDirDefault))
-            On Error Goto 0
-            blnEnableSyncWorkDirInitialized = True
-        End If
-        EnableSyncWorkDir = blnEnableSyncWorkDir
-    End Property
-    
-    Public Property Let EnableSyncWorkDir(NewValue As Boolean)
-        If (blnEnableSyncWorkDir Xor NewValue) Then
-            blnEnableSyncWorkDir = NewValue
-            On Error Resume Next
-            SaveSetting VBAHostNameVersion, AddInName, "EnableSyncWorkDir", CStr(blnEnableSyncWorkDir)
-            On Error Goto 0
-            If (blnEnableSyncWorkDir) Then
-                Call ActivateSyncWorkDir()
-            Else
-                Call DeactivateSyncWorkDir()
-            End If
-        End If
-    End Property
-    
-    Private Sub ActivateSyncWorkDir()
-        Set SyncWorkDir = New SyncWorkDir
-    End Sub
-    
-    Private Sub DeactivateSyncWorkDir()
-        Set SyncWorkDir = Nothing
     End Sub
 '
 

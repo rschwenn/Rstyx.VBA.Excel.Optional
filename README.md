@@ -15,7 +15,7 @@ Funktionen
 
 Zugriff auf die Optionen des Add-Ins
 ------------------------------------
- - Einstellungsdialog "Optional" im Datei-Menü (Backoffice)
+ - "Optional"-Tab im Datei-Menü (Backoffice)
 
 Lizenz
 -------
