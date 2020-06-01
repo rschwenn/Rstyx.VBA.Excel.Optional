@@ -17,4 +17,12 @@ Public Const EnableSyncWorkDirDefault       As Boolean = True
 Public Const EnableSaveAsPDFDefault         As Boolean = True
 
 
+
+Public Sub Test()
+    Call ThisWorkbook.GeoToolsHelper.DebugAddins()
+    Call ThisWorkbook.GeoToolsHelper.StopAddIn()
+    Debug.Print "ActionResult = " & ThisWorkbook.GeoToolsHelper.ActionResult
+    Call ThisWorkbook.GeoToolsHelper.DebugAddins()
+End Sub
+
 ' for jEdit:  :collapseFolds=1::tabSize=4::indentSize=4:

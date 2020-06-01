@@ -1,0 +1,340 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "GeoToolsHelper"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+
+'===============================================================================
+'  GeoToolsHelper.cls
+'===============================================================================
+' 
+' Helps starting and stopping the GeoTools-Add-In.
+'
+'-------------------------------------------------------------------------------
+                                                                                                                                      
+Option Explicit
+
+Const   AddinFileName       As String = "GeoTools.xlam"
+Const   ExtraSearchDir      As String = ""
+
+Const   DirTypeInstall      As String = "Installations-Verzeichnis"
+Const   DirTypeLibrary      As String = "AddIn-Verzeichnis"
+Const   DirTypeStartup      As String = "Startup-Verzeichnis"
+Const   DirTypeExtra        As String = "Vereinbartes Verzeichnis"
+Const   DirTypeThisAddIn    As String = "Verzeichnis des Optional Add-Ins"
+
+Const   ActionResultTimeout As Long   = 10   ' Duration of displaying the ation's result in seconds.
+
+
+
+Private blnIsAddInFound     As Boolean
+Private blnIsAddInInstalled As Boolean
+Private blnIsAddInOpen      As Boolean
+Private blnIsAddInListed    As Boolean
+Private strAddInFullName    As String
+Private strAddInDirName     As String
+Private strAddInDirType     As String
+Private strActionResult     As String
+Private oAddin              As AddIn
+
+
+Private Sub Class_Initialize()
+    Call GetAddinStatus()
+End Sub
+
+Private Sub Class_Terminate()
+    'Set App = Nothing
+End Sub
+
+
+Property Get IsAddInFound() As Boolean
+    IsAddInFound = blnIsAddInFound
+End Property
+
+Property Get IsAddInInstalled() As Boolean
+    IsAddInInstalled = blnIsAddInInstalled
+End Property
+
+Property Get IsAddInOpen() As Boolean
+    IsAddInOpen = blnIsAddInOpen
+End Property
+
+Property Get IsAddInListed() As Boolean
+    ' True, if Add-In is listed in the GUI Addin list (resp. Application.Addins).
+    IsAddInListed = blnIsAddInListed
+End Property
+
+Property Get IsAddInAutoLoad() As Boolean
+    ' True, if Add-In would be startet automatically at next Excel start.
+    IsAddInAutoLoad = (Me.IsAddInInstalled Or (Me.AddInDirType = DirTypeStartup))
+End Property
+
+Property Get AddInName() As String
+    AddInName = AddinFileName
+End Property
+
+Property Get AddInFullName() As String
+    AddInFullName = strAddInFullName
+End Property
+
+Property Get AddInDirName() As String
+    AddInDirName = strAddInDirName
+End Property
+
+Property Get AddInDirType() As String
+    AddInDirType = strAddInDirType
+End Property
+
+Property Get ActionResult() As String
+    ActionResult = strActionResult
+End Property
+
+
+
+Public Sub StartAddIn()
+    ' Tries to start the AddIn.
+    On Error Goto Catch
+    
+    If (Me.IsAddInOpen) Then
+        
+        Call SetActionResult("Add-In ist bereits aktiv => nichts zu tun.")
+        
+    ElseIf (Me.IsAddInInstalled) Then
+        ' In fact the Add-In should has been loaded already.
+        oAddin.Installed = False
+        oAddin.Installed = True
+        Call SetActionResult("Add-In wurde neu geladen (mit Excel's Add-In-Mechanismus).")
+        
+    ElseIf (Me.AddInDirType = DirTypeInstall) Then
+        ' Add-In is available in Add-In list.
+        oAddin.Installed = True
+        Call SetActionResult("Add-In wurde geladen (mit Excel's Add-In-Mechanismus).")
+        
+    ElseIf (Me.AddInDirType = DirTypeStartup) Then
+        ' Add-In isn't available in Add-In list, but has been found in a xlstart folder.
+        ' (Since it isn't loaded, it should has been unloaded manually before).
+        Dim AddinWbk As Workbook
+        Set AddinWbk = ThisWorkbook.Application.Workbooks.Open(FileName:=Me.AddInFullName, ReadOnly:=True, UpdateLinks:=0 , AddToMru:=False)
+        Call SetActionResult("Add-In wurde geladen (durch Öffnen der Datei).")
+        
+    ElseIf (Me.IsAddInFound) Then
+        ' Add-In isn't available in Add-In list, but has been found in a non-startup folder.
+        Set oAddin = ThisWorkbook.Application.AddIns.Add(Filename:=Me.AddInFullName, CopyFile:=False)
+        oAddin.Installed = True
+        Call SetActionResult("Add-In wurde installiert und geladen (mit Excel's Add-In-Mechanismus).")
+        
+    Else
+        ' Add-In isn't available in Add-In list and hasn't been found.
+        Call SetActionResult("Programmfehler: Add-In kann nicht gestartet werden, da sein Speicherort unbekannt ist.")
+    End If
+    
+    Call GetAddinStatus()
+    Exit Sub
+    
+    Catch:
+    Call SetActionResult(Err.Description)
+    Err.Clear
+    Call GetAddinStatus()
+End Sub
+
+Public Sub StopAddIn()
+    ' Tries to stop the AddIn.
+    On Error Goto Catch
+    
+    If (Not Me.IsAddInOpen) Then
+        Call SetActionResult("Add-In ist nicht aktiv => nichts zu tun.")
+        
+    ElseIf (Not Me.IsAddInInstalled) Then
+        ' Not installed but loaded Add-In (via startup folder or manually) => Close workbook.
+        Dim AddinWbk As Workbook
+        Set AddinWbk = ThisWorkbook.Application.Workbooks(AddinFileName)
+        AddinWbk.Close False
+        Call SetActionResult("Add-In wurde entladen (durch Schließen der Datei).")
+    Else
+        ' Normal Add-In: installed and loaded.
+        oAddin.Installed = False
+        Call SetActionResult("Add-In wurde entladen und deaktiviert (via Excel's Add-In-Mechanismus).")
+    End If
+    
+    Call GetAddinStatus()
+    Exit Sub
+    
+    Catch:
+    Call SetActionResult(Err.Description)
+    Err.Clear
+    Call GetAddinStatus()
+End Sub
+
+
+Private Sub GetAddinStatus()
+    ' Gets the AddIn's status and sets status properties.
+    
+    blnIsAddInFound     = False
+    blnIsAddInInstalled = False
+    blnIsAddInOpen      = False
+    blnIsAddInListed    = False
+    strAddInFullName    = "?"
+    strAddInDirName     = "?"
+    strAddInDirType     = "?"
+    
+    Set oAddin = GetAddin()
+    
+    If (Not oAddin Is Nothing) Then
+        blnIsAddInFound     = True
+        blnIsAddInListed    = True
+        blnIsAddInInstalled = oAddin.Installed
+        blnIsAddInOpen      = oAddin.IsOpen
+        'strAddInName       = oAddin.Name
+        strAddInFullName    = oAddin.FullName
+        strAddInDirName     = oAddin.Path
+        
+        If (oAddin.Installed) Then
+            strAddInDirType = DirTypeInstall
+        Else
+            ' Determine directory type for non-installed but loaded Add-In.
+            Select Case oAddin.Path
+                Case ThisWorkbook.Application.LibraryPath     :  strAddInDirType = DirTypeLibrary
+                Case ThisWorkbook.Application.UserLibraryPath :  strAddInDirType = DirTypeLibrary
+                Case ThisWorkbook.Application.StartupPath     :  strAddInDirType = DirTypeStartup
+                Case ThisWorkbook.Application.AltStartupPath  :  strAddInDirType = DirTypeStartup
+                Case ThisWorkbook.Path                        :  strAddInDirType = DirTypeThisAddIn
+                Case ExtraSearchDir                           :  strAddInDirType = DirTypeExtra
+            End Select
+        End If
+    Else
+        ' Add-In isn't listed or otherwise loaded.
+        ' => Search for Add-In file in several directories.
+        
+        ' Library directories.
+        blnIsAddInFound = LookForAddin(ThisWorkbook.Application.LibraryPath, DirTypeLibrary)
+        If (Not blnIsAddInFound) Then blnIsAddInFound = LookForAddin(ThisWorkbook.Application.UserLibraryPath, DirTypeLibrary)
+        
+        ' Startup directories.
+        If (Not blnIsAddInFound) Then blnIsAddInFound = LookForAddin(ThisWorkbook.Application.StartupPath, DirTypeStartup)
+        If (Not blnIsAddInFound) Then blnIsAddInFound = LookForAddin(ThisWorkbook.Application.AltStartupPath, DirTypeStartup)
+        
+        ' Directory of this AddIn.
+        If (Not blnIsAddInFound) Then blnIsAddInFound = LookForAddin(ThisWorkbook.Path, DirTypeThisAddIn)
+        
+        ' Extra directory.
+        If (Not blnIsAddInFound) Then blnIsAddInFound = LookForAddin(ExtraSearchDir, DirTypeExtra)
+    End If
+End Sub
+
+Private Function LookForAddin(ByVal Directory As String, ByVal DirType As String) As Boolean
+    ' --------------------------------------------------------------------------
+    ' Looks for Me.AddInName in given directory.
+    ' 
+    ' Input:  Directory: Folder to look into.
+    '         DirType:   If file is found, then Me.AddInDirType will be set to this.
+    ' 
+    ' Side effects:      If file is found, then Me.AddInFullName will be set to file path.
+    ' 
+    ' Returns:           True, if file has been found.
+    ' --------------------------------------------------------------------------
+    Dim FileFound   As Boolean
+    Dim FullName    As String
+    
+    If (Not (Directory = "")) Then
+        
+        If (Right(Directory, 1) = ThisWorkbook.Application.PathSeparator) Then
+            Directory = Left(Directory, Len(Directory)- 1)
+        End If
+        
+        FullName = Directory & ThisWorkbook.Application.PathSeparator & AddinFileName
+        
+        If (Not (Dir(FullName) = "")) Then
+            FileFound        = True
+            strAddInFullName = FullName
+            strAddInDirName  = Directory
+            strAddInDirType  = DirType
+        End If
+    End If
+    
+    LookForAddin = FileFound
+End Function
+
+Private Function GetAddin() As AddIn
+    ' Returns the Add-In (or Nothing).
+    Dim oCurrentAddin   As AddIn
+    Dim oAddin          As AddIn
+    
+    Debug.Print "Searching for available and otherwise loaded AddIns (Application.AddIns2) ..."
+    For Each oCurrentAddin In ThisWorkbook.Application.AddIns2
+        
+        Debug.Print "Name"      & "=" & oCurrentAddin.Name      & vbTab & _
+                    "Installed" & "=" & oCurrentAddin.Installed & vbTab & _
+                    "IsOpen"    & "=" & oCurrentAddin.IsOpen    & vbTab & _
+                    "FullName"  & "=" & oCurrentAddin.FullName
+        '
+        If (Lcase(Right(oCurrentAddin.FullName, Len(AddinFileName))) = Lcase(AddinFileName)) Then
+            Debug.Print "=> That's the target AddIn."
+            Set oAddin = oCurrentAddin
+            Exit For
+        End If
+    Next
+    
+    'If (oAddin Is Nothing) Then
+        'Debug.Print "Searching for otherwise opened AddIns (Application.AddIns2) ..."
+        'For Each oCurrentAddin In ThisWorkbook.Application.AddIns2
+        '    
+        '    Debug.Print "Name"      & "=" & oCurrentAddin.Name      & vbTab & _
+        '                "Installed" & "=" & oCurrentAddin.Installed & vbTab & _
+        '                "IsOpen"    & "=" & oCurrentAddin.IsOpen    & vbTab & _
+        '                "FullName"  & "=" & oCurrentAddin.FullName
+        '    '
+        '    If (Instr(lcase(oCurrentAddin.FullName), lcase(AddinFileName)) > 0) Then
+        '        Debug.Print "=> That's the target AddIn."
+        '        Debug.Print "=> Add the AddIn to the available Add-Ins list."
+        '        Call ThisWorkbook.Application.AddIns.Add(Filename:=oCurrentAddin.FullName)  *** FEHLER !?!?
+        '        Set oAddin = oCurrentAddin
+        '        Exit For
+        '    End If
+        'Next
+    'End If
+    
+    Set GetAddin = oAddin
+End Function
+
+Private Sub SetActionResult(Message As String)
+    ' Sets Me.ActionResult and scedules it's clearing.
+    On Error GoTo Catch
+    strActionResult = Message
+    'Application.OnTime (Now + TimeSerial(0,0,ActionResultTimeout)), "ClearActionResult"
+    
+    Exit Sub
+    Catch:
+    Err.Clear
+End Sub
+
+Private Sub ClearActionResult()
+    ' Clears Me.ActionResult.
+    On Error GoTo Catch
+    strActionResult = ""
+    
+    Exit Sub
+    Catch:
+    Err.Clear
+End Sub
+
+
+Public Sub DebugAddins()
+    Dim oCurrentAddin    As AddIn
+    
+    For Each oCurrentAddin In ThisWorkbook.Application.AddIns2
+        Debug.Print "Add-In:  Name=" & oCurrentAddin.Name      & vbTab & _
+                    "Installed="     & oCurrentAddin.Installed & vbTab & _
+                    "IsOpen="        & oCurrentAddin.IsOpen    & vbTab & _
+                    "FullName="      & oCurrentAddin.FullName
+    Next
+    
+    Debug.Print "Application.LibraryPath = "     & vbTab & ThisWorkbook.Application.LibraryPath
+    Debug.Print "Application.UserLibraryPath = " & vbTab & ThisWorkbook.Application.UserLibraryPath
+End Sub
+
+
+' for jEdit:  :collapseFolds=1::tabSize=4::indentSize=4:

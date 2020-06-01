@@ -84,4 +84,46 @@ Private oRibbon As IRibbonUI
     
 ' End Region
 
+
+' Region "Labels"
+    
+    ' Get text for a Label.
+    Sub OptionalLabelGetText(control As IRibbonControl, ByRef returnedVal)
+        On Error Resume Next
+        Select Case control.ID
+            Case "GtInfoLabelFilename" :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInName
+            Case "GtInfoLabelDirName"  :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInDirName
+            Case "GtInfoLabelDirType"  :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInDirType
+            Case "GtInfoLabelAutoLoad" :  returnedVal = ThisWorkbook.GeoToolsHelper.IsAddInAutoLoad
+            Case "GtInfoLabelLoaded"   :  returnedVal = ThisWorkbook.GeoToolsHelper.IsAddInOpen
+            Case "GtInfoLabelAction"   :  returnedVal = ThisWorkbook.GeoToolsHelper.ActionResult
+        End select
+        On Error Goto 0
+    End Sub
+    
+' End Region
+
+' Region "Action Buttons"
+    
+    Sub OptionalButtonAction(ByVal control As IRibbonControl)
+        'On Error Resume Next
+        Select Case control.ID
+            Case "GtStartButton"   : Call ThisWorkbook.GeoToolsHelper.StartAddIn
+            Case "GtStopButton"    : Call ThisWorkbook.GeoToolsHelper.StopAddIn
+            Case Else              : Msgbox "Ribbon.OptionalButtonAction(): Unbekannte Control.ID = " & control.ID
+        End select
+        Call UpdateOptionalRibbon
+        'On Error Goto 0
+    End Sub
+    
+    Sub GetEnabledButtonStart(control As IRibbonControl, ByRef returnedVal)
+        returnedVal = (ThisWorkbook.GeoToolsHelper.IsAddInFound And (Not ThisWorkbook.GeoToolsHelper.IsAddInOpen))
+    End Sub
+    
+    Sub GetEnabledButtonStop(control As IRibbonControl, ByRef returnedVal)
+        returnedVal = ThisWorkbook.GeoToolsHelper.IsAddInOpen
+    End Sub
+    
+' End Region
+
 ' for jEdit:  :collapseFolds=1::tabSize=4::indentSize=4:

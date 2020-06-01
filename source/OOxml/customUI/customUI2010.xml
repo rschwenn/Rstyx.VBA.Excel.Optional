@@ -34,19 +34,20 @@
                     onAction="SettingsButtonAction"
                     imageMso="AddInManager"
                     keytip="p"
-                    isDefinitive="true"
+                    isDefinitive="false"
         />-->
                 
         <tab id="OptionalTab"
              label="Optional"
+             title="Optional Add-In"
              keytip="p"
             >
             <firstColumn >
                 
-                <group id="HeaderGroup" label="Optional Add-In">
+                <group id="HeaderGroup" label="Info">
                     <topItems>
                         <labelControl id="VersionLabel" label="Version 3.1" />
-                        <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente" />
+                        <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Start/Stop" />
                     </topItems>
                 </group>
                 
@@ -95,15 +96,72 @@
                     </topItems>
                 </group>
                 
-                <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
+                <group id="GeoToolsGroup" label="GeoTools-Starter" >
                     <topItems>
-                        <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
-                        <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ + W + ENTER (nacheinander drücken)" />
-                        <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
+                        <layoutContainer id="GeoToolsInfolayoutContainer" layoutChildren="horizontal">
+                            
+                            <layoutContainer id="GeoToolsInfoLayoutContainerL" layoutChildren="vertical" >
+                                
+                                <labelControl id="GtLabelFilename" label="Add-In Dateiname:  " />
+                                <labelControl id="GtLabelDirName"  label="Add-In Speicherort:  " />
+                                <labelControl id="GtLabelDirType"  label="Add-In Speicherort-Typ:  " />
+                                <labelControl id="GtLabelAutoLoad" label="Add-In Auto-Start:  " />
+                                <labelControl id="GtLabelLoaded"   label="Add-In ist geladen:  " />
+                                
+                                <labelControl id="GtPaddingLabelL1" label=" " />
+                                
+                                <button id="GtStartButton"
+                                        label="GeoTools Start"
+                                        style="normal"
+                                        isDefinitive="false"
+                                        expand="horizontal"
+                                        getEnabled="GetEnabledButtonStart"
+                                        onAction="OptionalButtonAction"
+                                        keytip="s"
+                                        imageMso="MacroPlay"
+                                        />
+                            </layoutContainer>
+                            
+                            <layoutContainer id="GeoToolsInfoLayoutContainerR" layoutChildren="vertical" align="left" >
+                                
+                                <labelControl id="GtInfoLabelFilename" getLabel="OptionalLabelGetText" />
+                                <labelControl id="GtInfoLabelDirName"  getLabel="OptionalLabelGetText" />
+                                <labelControl id="GtInfoLabelDirType"  getLabel="OptionalLabelGetText" />
+                                <labelControl id="GtInfoLabelAutoLoad" getLabel="OptionalLabelGetText" />
+                                <labelControl id="GtInfoLabelLoaded"   getLabel="OptionalLabelGetText" />
+                                
+                                <labelControl id="GtPaddingLabelR1" label=" " />
+                                
+                                <button id="GtStopButton"
+                                        label="GeoTools Stop"
+                                        style="normal"
+                                        isDefinitive="false"
+                                        expand="horizontal"
+                                        getEnabled="GetEnabledButtonStop"
+                                        onAction="OptionalButtonAction"
+                                        keytip="t"
+                                        imageMso="MacroRecorderStop"
+                                        />
+                            </layoutContainer>
+                        </layoutContainer>
+                        
+                        <labelControl id="GtPaddingLabel1" label=" " />
+                        
+                        <labelControl id="GtInfoLabelAction" getLabel="OptionalLabelGetText" />
                     </topItems>
                 </group>
                 
-            </firstColumn>            
+            </firstColumn>
+            
+            <secondColumn>
+                <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
+                    <topItems>
+                        <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
+                        <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
+                        <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
+                    </topItems>
+                </group>
+            </secondColumn>
         </tab>
     </backstage>
     

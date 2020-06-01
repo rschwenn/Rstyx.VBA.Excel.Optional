@@ -57,6 +57,8 @@ Private blnEnableConditionalFormatInitialized   As Boolean
 Private blnEnableSaveAsPDF                      As Boolean
 Private blnEnableSaveAsPDFInitialized           As Boolean
 
+Private oGeoToolsHelper                         As GeoToolsHelper
+
 
 Private strVBAHostNameVersion   As String
 Private strAddInName            As String
@@ -70,6 +72,8 @@ Private Sub Workbook_Open()
     If (Me.EnableFileNewShortcut)   Then Call ActivateFileNewShortcut
     If (Me.EnableFileOpenShortcut)  Then Call ActivateFileOpenShortcut
     If (Me.EnableSaveAsPDF)         Then Call ActivateSaveAsPDF
+    
+    Set oGeoToolsHelper = New GeoToolsHelper
 End Sub
 
 
@@ -271,6 +275,17 @@ End Sub
     Private Sub DeactivateSaveAsPDF()
         Call ResetSaveAsPDFShortcut
     End Sub
+'
+
+
+' Region "GeoToolsHelper"
+    
+    Public Property Get GeoToolsHelper() As GeoToolsHelper
+        If (oGeoToolsHelper Is Nothing) Then
+            Set oGeoToolsHelper = New GeoToolsHelper
+        End If
+        Set GeoToolsHelper = oGeoToolsHelper
+    End Function
 '
 
 ' for jEdit:  :collapseFolds=2::tabSize=4::indentSize=4:
