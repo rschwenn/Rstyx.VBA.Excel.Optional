@@ -53,6 +53,15 @@ Private oRibbon As IRibbonUI
 ' End Region
 
 
+' Region "Backstage"
+    
+    Sub BackstageOnShow(control As IRibbonControl)
+        Debug.Print "Ribbon.BackstageOnShow()"
+        Call ThisWorkbook.GeoToolsHelper.InvalidateStatus()
+    End Sub
+    
+' End Region
+
 ' Region "Checkboxes"
     
     ' Response to a click on a checkbox.
@@ -90,6 +99,7 @@ Private oRibbon As IRibbonUI
     ' Get text for a Label.
     Sub OptionalLabelGetText(control As IRibbonControl, ByRef returnedVal)
         On Error Resume Next
+        Debug.Print "Ribbon.OptionalLabelGetText():  control.ID = " & control.ID
         Select Case control.ID
             Case "GtInfoLabelFilename" :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInName
             Case "GtInfoLabelDirName"  :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInDirName
@@ -107,6 +117,7 @@ Private oRibbon As IRibbonUI
     
     Sub OptionalButtonAction(ByVal control As IRibbonControl)
         'On Error Resume Next
+        Debug.Print "Ribbon.OptionalButtonAction():  control.ID = " & control.ID
         Select Case control.ID
             Case "GtStartButton"   : Call ThisWorkbook.GeoToolsHelper.StartAddIn
             Case "GtStopButton"    : Call ThisWorkbook.GeoToolsHelper.StopAddIn
@@ -117,10 +128,12 @@ Private oRibbon As IRibbonUI
     End Sub
     
     Sub GetEnabledButtonStart(control As IRibbonControl, ByRef returnedVal)
+        Debug.Print "Ribbon.GetEnabledButtonStart():  control.ID = " & control.ID
         returnedVal = (ThisWorkbook.GeoToolsHelper.IsAddInFound And (Not ThisWorkbook.GeoToolsHelper.IsAddInOpen))
     End Sub
     
     Sub GetEnabledButtonStop(control As IRibbonControl, ByRef returnedVal)
+        Debug.Print "Ribbon.GetEnabledButtonStop():  control.ID = " & control.ID
         returnedVal = ThisWorkbook.GeoToolsHelper.IsAddInOpen
     End Sub
     

@@ -5,21 +5,8 @@
         <command idMso="FileNewDefault" onAction="FromFileNewDefault"/>
     </commands>-->
     
-    <!--<ribbon>
-        <tabs>
-            <tab id="SpecialTab" label="Spezial">
-                <group id="OptionalGroup" label="Optional">
-                    <button id="OptionalSettingsButton"
-                            label="Einstellungen spezial"
-                            size="large"
-                            onAction="SettingsButtonAction"
-                            imageMso="AddInManager" />
-                </group>
-            </tab>
-        </tabs>
-    </ribbon>-->
-    
-    <backstage>
+    <backstage onShow="BackstageOnShow" >
+        
         <button id="FileNewDialogButton"
                 label="Neu (Dialog)" 
                 getVisible="getVisibleFileNewButton"
@@ -28,14 +15,6 @@
                 isDefinitive="true"
                 insertBeforeMso="TabOfficeStart"
         />
-                
-        <!--<button id="OptionalSettingsButton"
-                    label="Optional"
-                    onAction="SettingsButtonAction"
-                    imageMso="AddInManager"
-                    keytip="p"
-                    isDefinitive="false"
-        />-->
                 
         <tab id="OptionalTab"
              label="Optional"
@@ -46,8 +25,8 @@
                 
                 <group id="HeaderGroup" label="Info">
                     <topItems>
-                        <labelControl id="VersionLabel" label="Version 3.1" />
-                        <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Start/Stop" />
+                        <labelControl id="VersionLabel" label="Version 3.2" />
+                        <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
                     </topItems>
                 </group>
                 
@@ -96,7 +75,7 @@
                     </topItems>
                 </group>
                 
-                <group id="GeoToolsGroup" label="GeoTools-Starter" >
+                <group id="GeoToolsGroup" label="Status des GeoTools Add-In" >
                     <topItems>
                         <layoutContainer id="GeoToolsInfolayoutContainer" layoutChildren="horizontal">
                             

@@ -38,6 +38,7 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 ' 21.05.2020 v3.1  - Add-In umbenannt von "Hooks" nach "Optional"
 '                  - Oberfläche jetzt im Backoffice als Tab => Dialog entfernt.
 '                  - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
+' 02.06.2020 v3.2  - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -57,11 +58,10 @@ Private blnEnableConditionalFormatInitialized   As Boolean
 Private blnEnableSaveAsPDF                      As Boolean
 Private blnEnableSaveAsPDFInitialized           As Boolean
 
+Private strVBAHostNameVersion                   As String
+Private strAddInName                            As String
+
 Private oGeoToolsHelper                         As GeoToolsHelper
-
-
-Private strVBAHostNameVersion   As String
-Private strAddInName            As String
 
 
 ' Initialisierung
@@ -73,7 +73,7 @@ Private Sub Workbook_Open()
     If (Me.EnableFileOpenShortcut)  Then Call ActivateFileOpenShortcut
     If (Me.EnableSaveAsPDF)         Then Call ActivateSaveAsPDF
     
-    Set oGeoToolsHelper = New GeoToolsHelper
+    'Set oGeoToolsHelper = New GeoToolsHelper
 End Sub
 
 
