@@ -23,7 +23,8 @@
             >
             <firstColumn >
                 
-                <group id="HeaderGroup" label="Info">
+                <!--<group id="HeaderGroup" label="Info">-->
+                <group id="HeaderGroup" >
                     <topItems>
                         <labelControl id="VersionLabel" label="Version 3.2" />
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
@@ -75,17 +76,27 @@
                     </topItems>
                 </group>
                 
+                <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
+                    <topItems>
+                        <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
+                        <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
+                        <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
+                        
+                        <labelControl id="GtPaddingLabel0" label=" " />
+                    </topItems>
+                </group>
+                
                 <group id="GeoToolsGroup" label="Status des GeoTools Add-In" >
                     <topItems>
-                        <layoutContainer id="GeoToolsInfolayoutContainer" layoutChildren="horizontal">
+                        <layoutContainer id="GeoToolsInfolayoutContainer" layoutChildren="horizontal" >
                             
-                            <layoutContainer id="GeoToolsInfoLayoutContainerL" layoutChildren="vertical" >
+                            <layoutContainer id="GeoToolsInfoLayoutContainerL" layoutChildren="vertical" expand="neither" >
                                 
-                                <labelControl id="GtLabelFilename" label="Add-In Dateiname:  " />
-                                <labelControl id="GtLabelDirName"  label="Add-In Speicherort:  " />
-                                <labelControl id="GtLabelDirType"  label="Add-In Speicherort-Typ:  " />
-                                <labelControl id="GtLabelAutoLoad" label="Add-In Auto-Start:  " />
-                                <labelControl id="GtLabelLoaded"   label="Add-In ist geladen:  " />
+                                <labelControl id="GtLabelFilename" label="Dateiname:  " />
+                                <labelControl id="GtLabelDirName"  label="Speicherort:  " />
+                                <labelControl id="GtLabelDirType"  label="Speicherort-Typ:  " />
+                                <labelControl id="GtLabelAutoLoad" label="Auto-Start:  " />
+                                <labelControl id="GtLabelLoaded"   label="Ist geladen:  " />
                                 
                                 <labelControl id="GtPaddingLabelL1" label=" " />
                                 
@@ -115,7 +126,7 @@
                                         label="GeoTools Stop"
                                         style="normal"
                                         isDefinitive="false"
-                                        expand="horizontal"
+                                        expand="neither"
                                         getEnabled="GetEnabledButtonStop"
                                         onAction="OptionalButtonAction"
                                         keytip="t"
@@ -132,7 +143,7 @@
                 
             </firstColumn>
             
-            <secondColumn>
+            <!--<secondColumn>
                 <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
                     <topItems>
                         <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
@@ -140,7 +151,7 @@
                         <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
                     </topItems>
                 </group>
-            </secondColumn>
+            </secondColumn>-->
         </tab>
     </backstage>
     

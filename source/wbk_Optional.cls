@@ -38,7 +38,7 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 ' 21.05.2020 v3.1  - Add-In umbenannt von "Hooks" nach "Optional"
 '                  - Oberfläche jetzt im Backoffice als Tab => Dialog entfernt.
 '                  - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
-' 02.06.2020 v3.2  - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
+' 03.06.2020 v3.2  - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit

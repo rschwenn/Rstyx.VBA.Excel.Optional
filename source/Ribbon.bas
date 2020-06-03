@@ -55,9 +55,10 @@ Private oRibbon As IRibbonUI
 
 ' Region "Backstage"
     
-    Sub BackstageOnShow(control As IRibbonControl)
+    Sub BackstageOnShow(dummy As Object)
         Debug.Print "Ribbon.BackstageOnShow()"
         Call ThisWorkbook.GeoToolsHelper.InvalidateStatus()
+        Call UpdateOptionalRibbon()
     End Sub
     
 ' End Region

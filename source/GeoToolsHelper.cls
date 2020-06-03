@@ -142,7 +142,7 @@ Private oAddin              As AddIn
             Call SetActionResult("Add-In ist nicht aktiv => nichts zu tun.")
             
         ElseIf (Not Me.IsAddInInstalled) Then
-            ' Not installed but loaded Add-In (via startup folder or manually) => Close workbook.
+            ' Not installed but loaded Add-In (mit startup folder or manually) => Close workbook.
             Dim AddinWbk As Workbook
             Set AddinWbk = ThisWorkbook.Application.Workbooks(AddinFileName)
             AddinWbk.Close False
@@ -150,7 +150,7 @@ Private oAddin              As AddIn
         Else
             ' Normal Add-In: installed and loaded.
             oAddin.Installed = False
-            Call SetActionResult("Add-In wurde entladen und deaktiviert (via Excel's Add-In-Mechanismus).")
+            Call SetActionResult("Add-In wurde entladen und deaktiviert (mit Excel's Add-In-Mechanismus).")
         End If
         
         Call GetAddinStatus()
@@ -210,7 +210,7 @@ Private oAddin              As AddIn
             strAddInFullName    = oAddin.FullName
             strAddInDirName     = oAddin.Path
             
-            If (oAddin.Installed) Then
+            If (oAddin.Installed Or (Not oAddin.IsOpen)) Then
                 strAddInDirType = DirTypeInstall
             Else
                 ' Determine directory type for non-installed but loaded Add-In.
