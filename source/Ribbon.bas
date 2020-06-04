@@ -107,7 +107,10 @@ Private oRibbon As IRibbonUI
             Case "GtInfoLabelDirType"  :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInDirType
             Case "GtInfoLabelAutoLoad" :  returnedVal = ThisWorkbook.GeoToolsHelper.IsAddInAutoLoad
             Case "GtInfoLabelLoaded"   :  returnedVal = ThisWorkbook.GeoToolsHelper.IsAddInOpen
-            Case "GtInfoLabelAction"   :  returnedVal = ThisWorkbook.GeoToolsHelper.ActionResult
+            Case "GtInfoLabelError"    :  returnedVal = ThisWorkbook.GeoToolsHelper.AddInError
+            Case "GtInfoLabelAction"   :  returnedVal = ThisWorkbook.GeoToolsHelper.ActionMessage
+                
+            Case "GtLabelError"        :  returnedVal = IIf(ThisWorkbook.GeoToolsHelper.AddInError = "", "", "FEHLER:")
         End select
         On Error Goto 0
     End Sub

@@ -27,8 +27,6 @@ Const   DirTypeStartup      As String = "Startup-Verzeichnis"
 Const   DirTypeExtra        As String = "Vereinbartes Verzeichnis"
 Const   DirTypeThisAddIn    As String = "Verzeichnis des Optional Add-Ins"
 
-Const   ActionResultTimeout As Long   = 10   ' Duration of displaying the ation's result in seconds.
-
 
 Private blnIsAddInFound     As Boolean
 Private blnIsAddInInstalled As Boolean
@@ -37,7 +35,8 @@ Private blnIsAddInListed    As Boolean
 Private strAddInFullName    As String
 Private strAddInDirName     As String
 Private strAddInDirType     As String
-Private strActionResult     As String
+Private strAddInError       As String
+Private strActionMessage    As String
 Private oAddin              As AddIn
 
 
@@ -81,8 +80,12 @@ Private oAddin              As AddIn
         AddInDirType = strAddInDirType
     End Property
     
-    Property Get ActionResult() As String
-        ActionResult = strActionResult
+    Property Get AddInError() As String
+        AddInError = strAddInError
+    End Property
+    
+    Property Get ActionMessage() As String
+        ActionMessage = strActionMessage
     End Property
 '
 
@@ -94,42 +97,42 @@ Private oAddin              As AddIn
         
         If (Me.IsAddInOpen) Then
             
-            Call SetActionResult("Add-In ist bereits aktiv => nichts zu tun.")
+            Call SetActionMessage("Add-In ist bereits aktiv => nichts zu tun.")
             
         ElseIf (Me.IsAddInInstalled) Then
             ' In fact the Add-In should has been loaded already.
             oAddin.Installed = False
             oAddin.Installed = True
-            Call SetActionResult("Add-In wurde neu geladen (mit Excel's Add-In-Mechanismus).")
+            Call SetActionMessage("Add-In wurde neu geladen (mit Excel's Add-In-Mechanismus).")
             
         ElseIf (Me.AddInDirType = DirTypeInstall) Then
             ' Add-In is available in Add-In list.
             oAddin.Installed = True
-            Call SetActionResult("Add-In wurde geladen (mit Excel's Add-In-Mechanismus).")
+            Call SetActionMessage("Add-In wurde geladen (mit Excel's Add-In-Mechanismus).")
             
         ElseIf (Me.AddInDirType = DirTypeStartup) Then
             ' Add-In isn't available in Add-In list, but has been found in a xlstart folder.
             ' (Since it isn't loaded, it should has been unloaded manually before).
             Dim AddinWbk As Workbook
             Set AddinWbk = ThisWorkbook.Application.Workbooks.Open(FileName:=Me.AddInFullName, ReadOnly:=True, UpdateLinks:=0 , AddToMru:=False)
-            Call SetActionResult("Add-In wurde geladen (durch Öffnen der Datei).")
+            Call SetActionMessage("Add-In wurde geladen (durch Öffnen der Datei).")
             
         ElseIf (Me.IsAddInFound) Then
             ' Add-In isn't available in Add-In list, but has been found in a non-startup folder.
             Set oAddin = ThisWorkbook.Application.AddIns.Add(Filename:=Me.AddInFullName, CopyFile:=False)
             oAddin.Installed = True
-            Call SetActionResult("Add-In wurde installiert und geladen (mit Excel's Add-In-Mechanismus).")
+            Call SetActionMessage("Add-In wurde installiert und geladen (mit Excel's Add-In-Mechanismus).")
             
         Else
             ' Add-In isn't available in Add-In list and hasn't been found.
-            Call SetActionResult("Programmfehler: Add-In kann nicht gestartet werden, da sein Speicherort unbekannt ist.")
+            Call SetActionMessage("Programmfehler: Add-In kann nicht gestartet werden, da sein Speicherort unbekannt ist.")
         End If
         
         Call GetAddinStatus()
         Exit Sub
         
         Catch:
-        Call SetActionResult(Err.Description)
+        Call SetActionMessage(Err.Description)
         Err.Clear
         Call GetAddinStatus()
     End Sub
@@ -139,25 +142,25 @@ Private oAddin              As AddIn
         On Error Goto Catch
         
         If (Not Me.IsAddInOpen) Then
-            Call SetActionResult("Add-In ist nicht aktiv => nichts zu tun.")
+            Call SetActionMessage("Add-In ist nicht aktiv => nichts zu tun.")
             
         ElseIf (Not Me.IsAddInInstalled) Then
-            ' Not installed but loaded Add-In (mit startup folder or manually) => Close workbook.
+            ' Not installed but loaded Add-In (via startup folder or manually) => Close workbook.
             Dim AddinWbk As Workbook
             Set AddinWbk = ThisWorkbook.Application.Workbooks(AddinFileName)
             AddinWbk.Close False
-            Call SetActionResult("Add-In wurde entladen (durch Schließen der Datei).")
+            Call SetActionMessage("Add-In wurde entladen (durch Schließen der Datei).")
         Else
             ' Normal Add-In: installed and loaded.
             oAddin.Installed = False
-            Call SetActionResult("Add-In wurde entladen und deaktiviert (mit Excel's Add-In-Mechanismus).")
+            Call SetActionMessage("Add-In wurde entladen und deaktiviert (mit Excel's Add-In-Mechanismus).")
         End If
         
         Call GetAddinStatus()
         Exit Sub
         
         Catch:
-        Call SetActionResult(Err.Description)
+        Call SetActionMessage(Err.Description)
         Err.Clear
         Call GetAddinStatus()
     End Sub
@@ -195,6 +198,7 @@ Private oAddin              As AddIn
         strAddInFullName    = "?"
         strAddInDirName     = "?"
         strAddInDirType     = "?"
+        strAddInError       = ""
         
         Set oAddin = GetAddin()
         
@@ -202,13 +206,17 @@ Private oAddin              As AddIn
             
             Debug.Print "GeoToolsHelper.GetAddinStatus(): " & Me.AddInName & " in Add-In-Liste gefunden."
             
-            blnIsAddInFound     = True
+            blnIsAddInFound     = (Not (Dir(oAddin.FullName) = ""))
             blnIsAddInListed    = True
             blnIsAddInInstalled = oAddin.Installed
             blnIsAddInOpen      = oAddin.IsOpen
             'strAddInName       = oAddin.Name
             strAddInFullName    = oAddin.FullName
             strAddInDirName     = oAddin.Path
+            
+            If (Not Me.IsAddInFound) Then
+                strAddInError = "Add-In ist mit ungültigem Pfad registriert => Bitte manuell bereinigen."
+            End If
             
             If (oAddin.Installed Or (Not oAddin.IsOpen)) Then
                 strAddInDirType = DirTypeInstall
@@ -278,7 +286,7 @@ Private oAddin              As AddIn
     End Function
     
     Private Function GetAddin() As AddIn
-        ' Returns the Add-In (or Nothing).
+        ' Returns the Add-In, even if the file doesn't exists (or Nothing).
         Dim oCurrentAddin   As AddIn
         Dim oAddin          As AddIn
         
@@ -292,8 +300,13 @@ Private oAddin              As AddIn
             '
             If (Lcase(Right(oCurrentAddin.FullName, Len(AddinFileName))) = Lcase(AddinFileName)) Then
                 Debug.Print "=> That's the target AddIn."
-                Set oAddin = oCurrentAddin
-                Exit For
+                'If (Dir(oCurrentAddin.FullName) = "") Then
+                '    Debug.Print "=> Target AddIn doesn't exists."
+                'Else
+                '    Debug.Print "=> Target AddIn exists."
+                    Set oAddin = oCurrentAddin
+                    Exit For
+                'End If
             End If
         Next
         
@@ -319,21 +332,20 @@ Private oAddin              As AddIn
         Set GetAddin = oAddin
     End Function
     
-    Private Sub SetActionResult(Message As String)
-        ' Sets Me.ActionResult and scedules it's clearing.
+    Private Sub SetActionMessage(Message As String)
+        ' Sets Me.ActionMessage.
         On Error GoTo Catch
-        strActionResult = Message
-        'Application.OnTime (Now + TimeSerial(0,0,ActionResultTimeout)), "ClearActionResult"
+        strActionMessage = Message
         
         Exit Sub
         Catch:
         Err.Clear
     End Sub
     
-    Private Sub ClearActionResult()
-        ' Clears Me.ActionResult.
+    Private Sub ClearActionMessage()
+        ' Clears Me.ActionMessage.
         On Error GoTo Catch
-        strActionResult = ""
+        strActionMessage = ""
         
         Exit Sub
         Catch:

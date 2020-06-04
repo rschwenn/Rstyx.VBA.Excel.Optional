@@ -98,7 +98,7 @@
                                 <labelControl id="GtLabelAutoLoad" label="Auto-Start:  " />
                                 <labelControl id="GtLabelLoaded"   label="Ist geladen:  " />
                                 
-                                <labelControl id="GtPaddingLabelL1" label=" " />
+                                <labelControl id="GtLabelError"    getLabel="OptionalLabelGetText" />
                                 
                                 <button id="GtStartButton"
                                         label="GeoTools Start"
@@ -120,7 +120,7 @@
                                 <labelControl id="GtInfoLabelAutoLoad" getLabel="OptionalLabelGetText" />
                                 <labelControl id="GtInfoLabelLoaded"   getLabel="OptionalLabelGetText" />
                                 
-                                <labelControl id="GtPaddingLabelR1" label=" " />
+                                <labelControl id="GtInfoLabelError"    getLabel="OptionalLabelGetText" />
                                 
                                 <button id="GtStopButton"
                                         label="GeoTools Stop"
