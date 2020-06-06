@@ -26,7 +26,7 @@
                 <!--<group id="HeaderGroup" label="Info">-->
                 <group id="HeaderGroup" >
                     <topItems>
-                        <labelControl id="VersionLabel" label="Version 3.2" />
+                        <labelControl id="VersionLabel" label="Version 3.3" />
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
                     </topItems>
                 </group>
@@ -54,6 +54,26 @@
                                   getPressed="OptionalCheckboxGetPressed"
                                   keytip="p"
                                   />
+                        
+                        <layoutContainer id="FullScreenExtendedLayoutContainer" layoutChildren="horizontal" expand="neither" >
+                            
+                        
+                            <checkBox id="EnableFullScreenShortcutCheckbox"
+                                      label="F11 =&gt;  Vollbild ein/aus     "
+                                      onAction="OptionalCheckboxAction"
+                                      getPressed="OptionalCheckboxGetPressed"
+                                      keytip="v"
+                                      />
+                            
+                            <checkBox id="FullScreenExtendedCheckbox"
+                                      label="max. Fenstergröße statt Vollbild"
+                                      onAction="OptionalCheckboxAction"
+                                      getPressed="OptionalCheckboxGetPressed"
+                                      getEnabled="GetEnabledCheckbox"
+                                      keytip="f"
+                                      />
+                        </layoutContainer>
+                        
                     </topItems>
                 </group>
                 
@@ -88,7 +108,7 @@
                 
                 <group id="GeoToolsGroup" label="Status des GeoTools Add-In" >
                     <topItems>
-                        <layoutContainer id="GeoToolsInfolayoutContainer" layoutChildren="horizontal" >
+                        <layoutContainer id="GeoToolsInfoLayoutContainer" layoutChildren="horizontal" >
                             
                             <layoutContainer id="GeoToolsInfoLayoutContainerL" layoutChildren="vertical" expand="neither" >
                                 

@@ -39,6 +39,7 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                  - Oberfläche jetzt im Backoffice als Tab => Dialog entfernt.
 '                  - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
 ' 04.06.2020 v3.2  - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
+' 06.06.2020 v3.3  - Neu: Umschalten des Vollbildmodus.
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -58,6 +59,12 @@ Private blnEnableConditionalFormatInitialized   As Boolean
 Private blnEnableSaveAsPDF                      As Boolean
 Private blnEnableSaveAsPDFInitialized           As Boolean
 
+Private blnEnableFullScreenShortcut             As Boolean
+Private blnEnableFullScreenShortcutInitialized  As Boolean
+
+Private blnFullScreenExtended                   As Boolean
+Private blnFullScreenExtendedInitialized        As Boolean
+
 Private strVBAHostNameVersion                   As String
 Private strAddInName                            As String
 
@@ -67,11 +74,12 @@ Private oGeoToolsHelper                         As GeoToolsHelper
 ' Initialisierung
 Private Sub Workbook_Open()
     ' Initialisierung der Klassen.
-    If (Me.EnableConditionalFormat) Then Call ActivateConditionalFormat
-    If (Me.EnableFileNewButton)     Then Call ActivateFileNewButton
-    If (Me.EnableFileNewShortcut)   Then Call ActivateFileNewShortcut
-    If (Me.EnableFileOpenShortcut)  Then Call ActivateFileOpenShortcut
-    If (Me.EnableSaveAsPDF)         Then Call ActivateSaveAsPDF
+    If (Me.EnableConditionalFormat)  Then Call ActivateConditionalFormat
+    If (Me.EnableFileNewButton)      Then Call ActivateFileNewButton
+    If (Me.EnableFileNewShortcut)    Then Call ActivateFileNewShortcut
+    If (Me.EnableFileOpenShortcut)   Then Call ActivateFileOpenShortcut
+    If (Me.EnableFullScreenShortcut) Then Call ActivateFullScreenShortcut
+    If (Me.EnableSaveAsPDF)          Then Call ActivateSaveAsPDF
     
     'Set oGeoToolsHelper = New GeoToolsHelper
 End Sub
@@ -239,6 +247,64 @@ End Sub
     Private Sub DeactivateFileOpenShortcut()
         Call ResetFileOpenShortcut()
     End Sub
+'
+
+
+' Region "ToggleFullScreen" (Umschalten Vollbildmodus)
+    
+    Public Property Get EnableFullScreenShortcut() As Boolean
+        If (Not blnEnableFullScreenShortcutInitialized) Then
+            On Error Resume Next
+            blnEnableFullScreenShortcut = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableFullScreenShortcut", EnableFullScreenShortcutDefault))
+            On Error Goto 0
+            blnEnableFullScreenShortcutInitialized = True
+        End If
+        EnableFullScreenShortcut = blnEnableFullScreenShortcut
+    End Property
+    
+    Public Property Let EnableFullScreenShortcut(NewValue As Boolean)
+        If (blnEnableFullScreenShortcut Xor NewValue) Then
+            blnEnableFullScreenShortcut = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableFullScreenShortcut", CStr(blnEnableFullScreenShortcut)
+            On Error Goto 0
+            If (blnEnableFullScreenShortcut) Then
+                Call ActivateFullScreenShortcut()
+            Else
+                Call DeactivateFullScreenShortcut()
+            End If
+        End If
+    End Property
+    
+    
+    Private Sub ActivateFullScreenShortcut()
+        Call AssignFullScreenShortcut()
+    End Sub
+    
+    Private Sub DeactivateFullScreenShortcut()
+        Call ResetFullScreenShortcut()
+    End Sub
+    
+    
+    ' Option for ToggleFullScreen.
+    Public Property Get FullScreenExtended() As Boolean
+        If (Not blnFullScreenExtendedInitialized) Then
+            On Error Resume Next
+            blnFullScreenExtended = CBool(GetSetting(VBAHostNameVersion, AddInName, "FullScreenExtended", FullScreenExtendedDefault))
+            On Error Goto 0
+            blnFullScreenExtendedInitialized = True
+        End If
+        FullScreenExtended = blnFullScreenExtended
+    End Property
+    
+    Public Property Let FullScreenExtended(NewValue As Boolean)
+        If (blnFullScreenExtended Xor NewValue) Then
+            blnFullScreenExtended = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "FullScreenExtended", CStr(blnFullScreenExtended)
+            On Error Goto 0
+        End If
+    End Property
 '
 
 

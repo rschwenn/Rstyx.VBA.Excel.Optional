@@ -69,11 +69,13 @@ Private oRibbon As IRibbonUI
     Sub OptionalCheckboxAction(control As IRibbonControl, pressed As Boolean)
         On Error Resume Next
         Select Case control.ID
-            Case "EnableFileNewShortcutCheckbox"   :  ThisWorkbook.EnableFileNewShortcut   = pressed
-            Case "EnableFileOpenShortcutCheckbox"  :  ThisWorkbook.EnableFileOpenShortcut  = pressed
-            Case "EnableSaveAsPDFCheckbox"         :  ThisWorkbook.EnableSaveAsPDF         = pressed
-            Case "EnableConditionalFormatCheckbox" :  ThisWorkbook.EnableConditionalFormat = pressed
-            Case "EnableFileNewButtonCheckbox"     :  ThisWorkbook.EnableFileNewButton     = pressed
+            Case "EnableFileNewShortcutCheckbox"    :  ThisWorkbook.EnableFileNewShortcut    = pressed
+            Case "EnableFileOpenShortcutCheckbox"   :  ThisWorkbook.EnableFileOpenShortcut   = pressed
+            Case "EnableSaveAsPDFCheckbox"          :  ThisWorkbook.EnableSaveAsPDF          = pressed
+            Case "EnableConditionalFormatCheckbox"  :  ThisWorkbook.EnableConditionalFormat  = pressed
+            Case "EnableFileNewButtonCheckbox"      :  ThisWorkbook.EnableFileNewButton      = pressed
+            Case "EnableFullScreenShortcutCheckbox" :  ThisWorkbook.EnableFullScreenShortcut = pressed
+            Case "FullScreenExtendedCheckbox"       :  ThisWorkbook.FullScreenExtended       = pressed
         End select
         Call UpdateOptionalRibbon
         On Error Goto 0
@@ -83,11 +85,22 @@ Private oRibbon As IRibbonUI
     Sub OptionalCheckboxGetPressed(control As IRibbonControl, ByRef returnedVal)
         On Error Resume Next
         Select Case control.ID
-            Case "EnableFileNewShortcutCheckbox"   :  returnedVal = ThisWorkbook.EnableFileNewShortcut
-            Case "EnableFileOpenShortcutCheckbox"  :  returnedVal = ThisWorkbook.EnableFileOpenShortcut
-            Case "EnableSaveAsPDFCheckbox"         :  returnedVal = ThisWorkbook.EnableSaveAsPDF
-            Case "EnableConditionalFormatCheckbox" :  returnedVal = ThisWorkbook.EnableConditionalFormat
-            Case "EnableFileNewButtonCheckbox"     :  returnedVal = ThisWorkbook.EnableFileNewButton
+            Case "EnableFileNewShortcutCheckbox"    :  returnedVal = ThisWorkbook.EnableFileNewShortcut
+            Case "EnableFileOpenShortcutCheckbox"   :  returnedVal = ThisWorkbook.EnableFileOpenShortcut
+            Case "EnableSaveAsPDFCheckbox"          :  returnedVal = ThisWorkbook.EnableSaveAsPDF
+            Case "EnableConditionalFormatCheckbox"  :  returnedVal = ThisWorkbook.EnableConditionalFormat
+            Case "EnableFileNewButtonCheckbox"      :  returnedVal = ThisWorkbook.EnableFileNewButton
+            Case "EnableFullScreenShortcutCheckbox" :  returnedVal = ThisWorkbook.EnableFullScreenShortcut
+            Case "FullScreenExtendedCheckbox"       :  returnedVal = ThisWorkbook.FullScreenExtended
+        End select
+        On Error Goto 0
+    End Sub
+    
+    Sub GetEnabledCheckbox(control As IRibbonControl, ByRef returnedVal)
+        Debug.Print "Ribbon.GetEnabledCheckbox():  control.ID = " & control.ID
+        On Error Resume Next
+        Select Case control.ID
+            Case "FullScreenExtendedCheckbox"       :  returnedVal = ThisWorkbook.EnableFullScreenShortcut
         End select
         On Error Goto 0
     End Sub
