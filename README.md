@@ -8,14 +8,15 @@ Verhaltens von Excel 2016. Das Add-In wird über einen Einstellungsdialog gesteu
 Funktionen
 ----------
  - Klassischer "Datei Neu"-Dialog per Tastenkürzel "STRG+UMSCHALT+n"
-   sowie Knopf "Neu (Dialog)" im Backoffice.
+   sowie Knopf "Neu (Dialog)" im Backstage.
  - Klassischer "Datei Öffnen"-Dialog per Tastenkürzel "STRG+UMSCHALT+o"
  - "Speichern als PDF"-Dialog per Tastenkürzel "STRG+UMSCHALT+p".
  - Kontextmenü-Eintrag "Bedingte Formatierung"
+ - Vollbildmodus per Tastenkürzel "F11" umschalten
 
 Zugriff auf die Optionen des Add-Ins
 ------------------------------------
- - "Optional"-Tab im Datei-Menü (Backoffice)
+ - "Optional"-Tab im Datei-Menü (Backstage)
 
 Lizenz
 -------
