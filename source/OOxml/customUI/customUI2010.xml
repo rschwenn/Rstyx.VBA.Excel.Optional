@@ -26,7 +26,7 @@
                 <!--<group id="HeaderGroup" label="Info">-->
                 <group id="HeaderGroup" >
                     <topItems>
-                        <labelControl id="VersionLabel" label="Version 3.3" />
+                        <labelControl id="VersionLabel" label="Version 3.4" />
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
                     </topItems>
                 </group>
