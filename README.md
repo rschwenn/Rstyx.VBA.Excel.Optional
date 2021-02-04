@@ -1,7 +1,7 @@
 Rstyx.VBA.Excel.Optional
 ========================
 
-Dieses Add-In für Excel 2016 x64 bietet kleine, optionale Anpassungen der Oberfläche und des 
+Dieses Add-In für Excel 2016 bietet kleine, optionale Anpassungen der Oberfläche und des 
 Verhaltens von Excel 2016. Das Add-In wird über einen Einstellungsdialog gesteuert.
 
 
@@ -25,4 +25,4 @@ Lizenz
 
 Abhängigkeiten
 --------------
- - Excel 2016 bzw. Excel 395 (nur x64)
+ - Excel 2016 bzw. Excel 395
