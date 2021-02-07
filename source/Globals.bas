@@ -6,13 +6,14 @@ Attribute VB_Name = "Globals"
 Option Explicit
 
 
-Public Const AddInVersion   As String = "3.4"
+Public Const AddInVersion   As String = "3.5"
 
 ' Standard-Einstellungen
 Public Const EnableConditionalFormatDefault     As Boolean = False
 Public Const EnableFileNewButtonDefault         As Boolean = False
 Public Const EnableFileNewShortcutDefault       As Boolean = True
 Public Const EnableFileOpenShortcutDefault      As Boolean = True
+Public Const EnableFileSaveAsShortcutDefault    As Boolean = True
 Public Const EnableFullScreenShortcutDefault    As Boolean = False
 Public Const EnableSaveAsPDFDefault             As Boolean = True
 

@@ -23,7 +23,7 @@ Const   ExtraSearchDir      As String = ""
 
 Const   DirTypeInstall      As String = "Installations-Verzeichnis"
 Const   DirTypeLibrary      As String = "AddIn-Verzeichnis"
-Const   DirTypeStartup      As String = "Startup-Verzeichnis"
+Const   DirTypeStartup      As String = "Autostart-Verzeichnis"
 Const   DirTypeExtra        As String = "Vereinbartes Verzeichnis"
 Const   DirTypeThisAddIn    As String = "Verzeichnis des Optional Add-Ins"
 

@@ -10,6 +10,7 @@ Funktionen
  - Klassischer "Datei Neu"-Dialog per Tastenkürzel "STRG+UMSCHALT+n"
    sowie Knopf "Neu (Dialog)" im Backstage.
  - Klassischer "Datei Öffnen"-Dialog per Tastenkürzel "STRG+UMSCHALT+o"
+ - Klassischer "Datei Speichern als"-Dialog per Tastenkürzel "STRG+UMSCHALT+s"
  - "Speichern als PDF"-Dialog per Tastenkürzel "STRG+UMSCHALT+p".
  - Kontextmenü-Eintrag "Bedingte Formatierung"
  - Vollbildmodus per Tastenkürzel "F11" umschalten

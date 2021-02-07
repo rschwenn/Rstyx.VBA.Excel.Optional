@@ -71,6 +71,7 @@ Private oRibbon As IRibbonUI
         Select Case control.ID
             Case "EnableFileNewShortcutCheckbox"    :  ThisWorkbook.EnableFileNewShortcut    = pressed
             Case "EnableFileOpenShortcutCheckbox"   :  ThisWorkbook.EnableFileOpenShortcut   = pressed
+            Case "EnableFileSaveAsShortcutCheckbox" :  ThisWorkbook.EnableFileSaveAsShortcut = pressed
             Case "EnableSaveAsPDFCheckbox"          :  ThisWorkbook.EnableSaveAsPDF          = pressed
             Case "EnableConditionalFormatCheckbox"  :  ThisWorkbook.EnableConditionalFormat  = pressed
             Case "EnableFileNewButtonCheckbox"      :  ThisWorkbook.EnableFileNewButton      = pressed
@@ -87,6 +88,7 @@ Private oRibbon As IRibbonUI
         Select Case control.ID
             Case "EnableFileNewShortcutCheckbox"    :  returnedVal = ThisWorkbook.EnableFileNewShortcut
             Case "EnableFileOpenShortcutCheckbox"   :  returnedVal = ThisWorkbook.EnableFileOpenShortcut
+            Case "EnableFileSaveAsShortcutCheckbox" :  returnedVal = ThisWorkbook.EnableFileSaveAsShortcut
             Case "EnableSaveAsPDFCheckbox"          :  returnedVal = ThisWorkbook.EnableSaveAsPDF
             Case "EnableConditionalFormatCheckbox"  :  returnedVal = ThisWorkbook.EnableConditionalFormat
             Case "EnableFileNewButtonCheckbox"      :  returnedVal = ThisWorkbook.EnableFileNewButton

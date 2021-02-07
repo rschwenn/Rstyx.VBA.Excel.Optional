@@ -40,6 +40,8 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '                  - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
 ' 04.06.2020 v3.2  - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
 ' 06.06.2020 v3.3  - Neu: Umschalten des Vollbildmodus.
+' 07.12.2020 v3.4  - FileOpenDirect: Dialog startet im Verzeichnis der aktiven Arbeitsmappe
+' 07.02.2021 v3.5  - Neu: Klassischer "Datei Speichern als"-Dialog per Tastenkürzel "STRG+UMSCHALT+s"
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
@@ -52,6 +54,9 @@ Private blnEnableFileNewButtonInitialized       As Boolean
 
 Private blnEnableFileOpenShortcut               As Boolean
 Private blnEnableFileOpenShortcutInitialized    As Boolean
+
+Private blnEnableFileSaveAsShortcut             As Boolean
+Private blnEnableFileSaveAsShortcutInitialized  As Boolean
 
 Private blnEnableConditionalFormat              As Boolean
 Private blnEnableConditionalFormatInitialized   As Boolean
@@ -78,6 +83,7 @@ Private Sub Workbook_Open()
     If (Me.EnableFileNewButton)      Then Call ActivateFileNewButton
     If (Me.EnableFileNewShortcut)    Then Call ActivateFileNewShortcut
     If (Me.EnableFileOpenShortcut)   Then Call ActivateFileOpenShortcut
+    If (Me.EnableFileSaveAsShortcut) Then Call ActivateFileSaveAsShortcut
     If (Me.EnableFullScreenShortcut) Then Call ActivateFullScreenShortcut
     If (Me.EnableSaveAsPDF)          Then Call ActivateSaveAsPDF
     
@@ -246,6 +252,42 @@ End Sub
     
     Private Sub DeactivateFileOpenShortcut()
         Call ResetFileOpenShortcut()
+    End Sub
+'
+
+
+' Region "FileSaveAsDialog" (klassischer Speichern als-Dialog)
+    
+    Public Property Get EnableFileSaveAsShortcut() As Boolean
+        If (Not blnEnableFileSaveAsShortcutInitialized) Then
+            On Error Resume Next
+            blnEnableFileSaveAsShortcut = CBool(GetSetting(VBAHostNameVersion, AddInName, "EnableFileSaveAsShortcut", EnableFileSaveAsShortcutDefault))
+            On Error Goto 0
+            blnEnableFileSaveAsShortcutInitialized = True
+        End If
+        EnableFileSaveAsShortcut = blnEnableFileSaveAsShortcut
+    End Property
+    
+    Public Property Let EnableFileSaveAsShortcut(NewValue As Boolean)
+        If (blnEnableFileSaveAsShortcut Xor NewValue) Then
+            blnEnableFileSaveAsShortcut = NewValue
+            On Error Resume Next
+            SaveSetting VBAHostNameVersion, AddInName, "EnableFileSaveAsShortcut", CStr(blnEnableFileSaveAsShortcut)
+            On Error Goto 0
+            If (blnEnableFileSaveAsShortcut) Then
+                Call ActivateFileSaveAsShortcut()
+            Else
+                Call DeactivateFileSaveAsShortcut()
+            End If
+        End If
+    End Property
+    
+    Private Sub ActivateFileSaveAsShortcut()
+        Call AssignFileSaveAsShortcut()
+    End Sub
+    
+    Private Sub DeactivateFileSaveAsShortcut()
+        Call ResetFileSaveAsShortcut()
     End Sub
 '
 

@@ -26,8 +26,8 @@
                 <!--<group id="HeaderGroup" label="Info">-->
                 <group id="HeaderGroup" >
                     <topItems>
-                        <labelControl id="VersionLabel" label="Version 3.4" />
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
+                        <labelControl id="VersionLabel" label="Version 3.5" />
                     </topItems>
                 </group>
                 
@@ -48,8 +48,15 @@
                                   keytip="o"
                                   />
                         
+                        <checkBox id="EnableFileSaveAsShortcutCheckbox"
+                                  label="STRG+UMSCHALT+S  =&gt;  Klassischer &quot;Datei-&gt;Speichern als&quot;-Dialog"
+                                  onAction="OptionalCheckboxAction"
+                                  getPressed="OptionalCheckboxGetPressed"
+                                  keytip="o"
+                                  />
+                        
                         <checkBox id="EnableSaveAsPDFCheckbox"
-                                  label="STRG+UMSCHALT+P =&gt;  &quot;Speichern als PDF&quot;-Dialog"
+                                  label="STRG+UMSCHALT+P  =&gt;  &quot;Speichern als PDF&quot;-Dialog"
                                   onAction="OptionalCheckboxAction"
                                   getPressed="OptionalCheckboxGetPressed"
                                   keytip="p"
@@ -98,7 +105,6 @@
                 
                 <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
                     <topItems>
-                        <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
                         <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
                         <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
                         
@@ -166,7 +172,6 @@
             <!--<secondColumn>
                 <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
                     <topItems>
-                        <labelControl id="Tip1Label" label="\U9679   &quot;Speichern unter&quot;-Dialog:  F12" />
                         <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
                         <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
                     </topItems>
