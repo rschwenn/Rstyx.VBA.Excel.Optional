@@ -27,7 +27,7 @@
                 <group id="HeaderGroup" >
                     <topItems>
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
-                        <labelControl id="VersionLabel" label="Version 3.5" />
+                        <labelControl id="VersionLabel" label="Version 3.5.1" />
                     </topItems>
                 </group>
                 
@@ -135,6 +135,8 @@
                                         onAction="OptionalButtonAction"
                                         keytip="s"
                                         imageMso="MacroPlay"
+                                        screentip="Erkennung der GeoTools"
+                                        supertip="Die Datei GeoTools.xlam wird an folgenden Orten gefunden: Excel-AddIn-Liste, zwei Autostart-Ordner, zwei AddIn-Ordner, Ordner des Optional Add-Ins"
                                         />
                             </layoutContainer>
                             
@@ -180,7 +182,7 @@
         </tab>
     </backstage>
     
-    <contextMenus>
+    <!--<contextMenus>
         <contextMenu idMso="ContextMenuCell">
             <menuSeparator id="MySeparator" />
             <button idMso="ConditionalFormattingsManage"
@@ -188,7 +190,7 @@
                     label="Bedingte Formatierung"
                     insertBeforeMso="FormatCellsDialog" />
         </contextMenu>
-    </contextMenus>
+    </contextMenus>-->
     
 </customUI>
 

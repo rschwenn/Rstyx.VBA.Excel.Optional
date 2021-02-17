@@ -11,37 +11,39 @@ Attribute cbbFileNew.VB_VarHelpID = -1
 '---------------------------------------------------------------------------------------------------
 ' wbk_Optional.cls (Robert Schwenn)
 ' 
-' 24.11.2008 v1.0  Der Menüpunkt "Datei -> Neu..." wird hier verarbeitet:
-'                    Statt den Aufgabenbereich anzuzeigen, startet direkt der
-'                    Dialog "Vorlage wählen" (wie Excel 97) im Listenmodus
-' 04.01.2014 v2.0  - Umstrukturiert: 
-'                    - Je Hook ein eigenes Modul
-'                    - In wbk_Hooks.cls: je Hook eine Aktivierungs- und Deaktivierungsroutine
-'                      sowie eine Eigenschaft (Hauptschalter)
-'                  - Anpassung für Excel 2010:
-'                    - Hook für "Datei -> Neu..." umgestrickt.
-'                    - Synchronisierung des Excel-Arbeitsverzeichnisses mit dem Speicherort
-'                      der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
-'                      (Der Speichern-unter-Dialog startet ohnehin dort).
-'                    - Einstellungsdialog in Register-Tab "Spezial"
-' 24.01.2014 v2.1  - Neu: Kontextmenüeintrag "Bedingte Formatierung"
-' 16.02.2014 v2.2  - Ribbon-Kode: Excel-weit eindeutige Routinenamen (Problemvermeidung)
-' 20.11.2016 v2.3  - Bugfix: Synchronisierung des Excel-Arbeitsverzeichnisses arbeitet jetzt
-'                    auch mit UNC-Pfaden (bisher trat ein Fehler auf)
-' 30.11.2016 v2.4  - Neu: PDF-Export per Tastenkürzel "STRG+UMSCHALT+p".
-' 11.05.2020 v3.0  - Umstellung auf 64 bit und Office 2016.
-'                  - Synchronisierung des Excel-Arbeitsverzeichnisses aufgegeben.
-'                    (scheint nun Excel-Standard zu sein wegen SDI)
-'                  - FileNewDirect ersetzt durch FileNewShortcut und FileNewButton.
-'                    (Die Standardaktion "Datei -> Neu..." wird nicht mehr abgefangen)
-'                  - Neu: FileNewOpenShortcut
-' 21.05.2020 v3.1  - Add-In umbenannt von "Hooks" nach "Optional"
-'                  - Oberfläche jetzt im Backoffice als Tab => Dialog entfernt.
-'                  - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
-' 04.06.2020 v3.2  - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
-' 06.06.2020 v3.3  - Neu: Umschalten des Vollbildmodus.
-' 07.12.2020 v3.4  - FileOpenDirect: Dialog startet im Verzeichnis der aktiven Arbeitsmappe
-' 07.02.2021 v3.5  - Neu: Klassischer "Datei Speichern als"-Dialog per Tastenkürzel "STRG+UMSCHALT+s"
+' 24.11.2008 v1.0   Der Menüpunkt "Datei -> Neu..." wird hier verarbeitet:
+'                     Statt den Aufgabenbereich anzuzeigen, startet direkt der
+'                     Dialog "Vorlage wählen" (wie Excel 97) im Listenmodus
+' 04.01.2014 v2.0   - Umstrukturiert: 
+'                     - Je Hook ein eigenes Modul
+'                     - In wbk_Hooks.cls: je Hook eine Aktivierungs- und Deaktivierungsroutine
+'                       sowie eine Eigenschaft (Hauptschalter)
+'                   - Anpassung für Excel 2010:
+'                     - Hook für "Datei -> Neu..." umgestrickt.
+'                     - Synchronisierung des Excel-Arbeitsverzeichnisses mit dem Speicherort
+'                       der aktiven Arbeitsmappe, damit der Öffnen-Dialog dort startet.
+'                       (Der Speichern-unter-Dialog startet ohnehin dort).
+'                     - Einstellungsdialog in Register-Tab "Spezial"
+' 24.01.2014 v2.1   - Neu: Kontextmenüeintrag "Bedingte Formatierung"
+' 16.02.2014 v2.2   - Ribbon-Kode: Excel-weit eindeutige Routinenamen (Problemvermeidung)
+' 20.11.2016 v2.3   - Bugfix: Synchronisierung des Excel-Arbeitsverzeichnisses arbeitet jetzt
+'                     auch mit UNC-Pfaden (bisher trat ein Fehler auf)
+' 30.11.2016 v2.4   - Neu: PDF-Export per Tastenkürzel "STRG+UMSCHALT+p".
+' 11.05.2020 v3.0   - Umstellung auf Office 2016 (VBA 7).
+'                   - Synchronisierung des Excel-Arbeitsverzeichnisses aufgegeben.
+'                     (scheint nun Excel-Standard zu sein wegen SDI)
+'                   - FileNewDirect ersetzt durch FileNewShortcut und FileNewButton.
+'                     (Die Standardaktion "Datei -> Neu..." wird nicht mehr abgefangen)
+'                   - Neu: FileNewOpenShortcut
+' 21.05.2020 v3.1   - Add-In umbenannt von "Hooks" nach "Optional"
+'                   - Oberfläche jetzt im Backoffice als Tab => Dialog entfernt.
+'                   - Synchronisierung des Excel-Arbeitsverzeichnisses entfernt.
+' 04.06.2020 v3.2   - Unterstützung für GeoTools Add-In: Status-Anzeige und Start/Stop.
+' 06.06.2020 v3.3   - Neu: Umschalten des Vollbildmodus.
+' 07.12.2020 v3.4   - FileOpenDirect: Dialog startet im Verzeichnis der aktiven Arbeitsmappe
+' 07.02.2021 v3.5   - Neu: Klassischer "Datei Speichern als"-Dialog per Tastenkürzel "STRG+UMSCHALT+s"
+' 17.02.2021 v3.5.1 - GeoTools-Start-Knopf zeigt ScreenTip mit Hinweis, welche Ordner
+'                     nach den GeoTools durhsucht werden.
 '---------------------------------------------------------------------------------------------------
  
 Option Explicit
