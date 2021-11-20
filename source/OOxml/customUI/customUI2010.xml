@@ -27,7 +27,7 @@
                 <group id="HeaderGroup" >
                     <topItems>
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
-                        <labelControl id="VersionLabel" label="Version 3.5.1" />
+                        <labelControl id="VersionLabel" label="Version 3.5.2" />
                     </topItems>
                 </group>
                 
@@ -182,7 +182,7 @@
         </tab>
     </backstage>
     
-    <!--<contextMenus>
+    <contextMenus>
         <contextMenu idMso="ContextMenuCell">
             <menuSeparator id="MySeparator" />
             <button idMso="ConditionalFormattingsManage"
@@ -190,7 +190,7 @@
                     label="Bedingte Formatierung"
                     insertBeforeMso="FormatCellsDialog" />
         </contextMenu>
-    </contextMenus>-->
+    </contextMenus>
     
 </customUI>
 
