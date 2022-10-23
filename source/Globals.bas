@@ -6,7 +6,7 @@ Attribute VB_Name = "Globals"
 Option Explicit
 
 
-Public Const AddInVersion   As String = "3.5"
+Public Const AddInVersion   As String = "3.5.3"
 
 ' Standard-Einstellungen
 Public Const EnableConditionalFormatDefault     As Boolean = False
