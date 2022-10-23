@@ -105,8 +105,8 @@
                 
                 <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
                     <topItems>
-                        <labelControl id="Tip2Label" label="\U9679   Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
-                        <labelControl id="Tip3Label" label="\U9679   Datei schliessen:  STRG + F4" />
+                        <labelControl id="Tip2Label" label="¤ Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
+                        <labelControl id="Tip3Label" label="¤ Datei schliessen:  STRG + F4" />
                         
                         <labelControl id="GtPaddingLabel0" label=" " />
                     </topItems>
