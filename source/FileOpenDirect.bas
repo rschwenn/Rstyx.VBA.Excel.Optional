@@ -9,29 +9,33 @@ Attribute VB_Name = "FileOpenDirect"
 
 Option Explicit
 
-
 ' Tastenkürzel "STRG+UMSCHALT+o" wird dem Makro "FileOpenDialog" zugewiesen. 
 Sub AssignFileOpenShortcut()
   Application.OnKey "+^o", "FileOpenDialog"
 End Sub
 
-' Tastenkürzel "STRG+UMSCHALT+o" wird auf Standard (nichts) zurückgesetzt. 
+' Tastenkürzel "STRG+UMSCHALT+o" wird auf Standard zurückgesetzt. 
 Sub ResetFileOpenShortcut()
   Application.OnKey "+^o"
 End Sub
 
 
-' Startet den klassischen Dialog "Datei Neu".
+' Startet den klassischen Dialog "Datei Öffnen".
 Sub FileOpenDialog()
     'On Error Resume Next
+    Dim FileOpenDialog As FileDialog
     
     ' Arbeitsverzeichnis setzen auf das der aktiven Arbeitsmappe.
     If (Not ActiveWorkbook Is Nothing) Then
         SetCurrentDirectory ActiveWorkbook.Path
     End If
     
-    ' Dateidialog.
-    Application.CommandBars.ExecuteMso "FileOpen"
+    Set FileOpenDialog = Application.FileDialog(msoFileDialogOpen)
+    FileOpenDialog.FilterIndex = 2
+    If (FileOpenDialog.Show) Then
+        ' Dialog nicht abgebrochen.
+        FileOpenDialog.Execute
+    End If
 End Sub
 
 

@@ -27,7 +27,7 @@
                 <group id="HeaderGroup" >
                     <topItems>
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
-                        <labelControl id="VersionLabel" label="Version 3.5.3" />
+                        <labelControl id="VersionLabel" label="Version 3.6.0" />
                     </topItems>
                 </group>
                 
@@ -105,8 +105,8 @@
                 
                 <group id="TipsGroup" label="Tips: Standard-Tastenkürzel" >
                     <topItems>
-                        <labelControl id="Tip2Label" label="¤ Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
-                        <labelControl id="Tip3Label" label="¤ Datei schliessen:  STRG + F4" />
+                        <labelControl id="Tip2Label" label="- Werte einfügen:  KONTEXTMENÜ, W, ENTER" />
+                        <labelControl id="Tip3Label" label="- Datei schliessen:  STRG + F4" />
                         
                         <labelControl id="GtPaddingLabel0" label=" " />
                     </topItems>

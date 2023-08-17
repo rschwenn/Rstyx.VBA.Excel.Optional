@@ -26,26 +26,46 @@ End Sub
 ' und das Workbook-Objekt die Eigenschaft "IsWorkbookWithMacros" bietet, welche
 ' "True" zurückgibt.
 Sub FileSaveAsDialog()
-    Dim IsNewWorkbookWithMacros  As Boolean
-    IsNewWorkbookWithMacros = False
+    Dim FileSaveDialog          As FileDialog
+    Dim IsNewWorkbookWithMacros As Boolean
+    Dim WorkbookHasVBProject    As Boolean
+    Dim FilterIndex             As Long
     
-    If (Application.ActiveWorkbook.Path = "") Then
-        ' New workbook (not saved yet).
-        On Error Resume Next
-        ' If the Workbook template provides a property "IsWorkbookWithMacros":
-        IsNewWorkbookWithMacros = Application.ActiveWorkbook.IsWorkbookWithMacros
-        On Error GoTo 0
-    End If
-    
-    If (IsNewWorkbookWithMacros) Then
-        Call SaveAsXLSM()
-    Else
-        Application.CommandBars.ExecuteMso "FileSaveAs"
+    If (Not Application.ActiveWorkbook Is Nothing) Then
+        
+        ' Eigene Eigenschaft abfragen (möglicherweise überflüssig wegen Workbook.HasVBProject)
+        IsNewWorkbookWithMacros = False
+        If (Application.ActiveWorkbook.Path = "") Then
+            ' New workbook (not saved yet).
+            On Error Resume Next
+            ' If the Workbook template provides a property "IsWorkbookWithMacros":
+            IsNewWorkbookWithMacros = Application.ActiveWorkbook.IsWorkbookWithMacros
+            On Error GoTo 0
+        End If
+        
+        ' Arbeitsmappe mit Makros?
+        WorkbookHasVBProject = (Application.ActiveWorkbook.HasVBProject Or IsNewWorkbookWithMacros)
+        
+        ' Dateifilter.
+        If (WorkbookHasVBProject) Then
+            FilterIndex = 2
+        Else
+            FilterIndex = 1
+        End If
+        
+        ' Dateidialog.
+        Set FileSaveDialog = Application.FileDialog(msoFileDialogSaveAs)
+        FileSaveDialog.FilterIndex = FilterIndex
+        If (FileSaveDialog.Show) Then
+            ' Dialog nicht abgebrochen.
+            FileSaveDialog.Execute
+        End If
     End If
 End Sub
 
 
 ' Speichert die aktive Arbeitsmappe als XLSM nach Dateidialog mit nur dieser Typwahl.
+' DEPRECATED.
 Private Sub SaveAsXLSM()
     
     Dim Title           As String
