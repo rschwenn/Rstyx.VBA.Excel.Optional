@@ -35,6 +35,12 @@ Sub FileOpenDialog()
     If (FileOpenDialog.Show) Then
         ' Dialog nicht abgebrochen.
         FileOpenDialog.Execute
+        
+        ' Ereignisse werden hier unterdrückt (durch FileOpenDialog.Execute ?)
+        ' => Für GeoTools nachhelfen durch Aufruf der dafür vorgesehenen Routine:
+        On Error Resume Next
+        Call Application.Run("WorkbookOpened")
+        On Error Goto 0
     End If
 End Sub
 
