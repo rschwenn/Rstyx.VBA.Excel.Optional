@@ -56,6 +56,7 @@ Sub FileSaveAsDialog()
         ' Dateidialog.
         Set FileSaveDialog = Application.FileDialog(msoFileDialogSaveAs)
         FileSaveDialog.FilterIndex = FilterIndex
+        FileSaveDialog.InitialFileName = Application.ActiveWorkbook.Name
         If (FileSaveDialog.Show) Then
             ' Dialog nicht abgebrochen.
             FileSaveDialog.Execute

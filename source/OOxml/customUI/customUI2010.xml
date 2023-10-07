@@ -19,7 +19,7 @@
         <tab id="OptionalTab"
              label="Optional"
              title="Optional Add-In"
-             keytip="p"
+             keytip="w"
             >
             <firstColumn >
                 
@@ -27,7 +27,7 @@
                 <group id="HeaderGroup" >
                     <topItems>
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
-                        <labelControl id="VersionLabel" label="Version 3.6.0" />
+                        <labelControl id="VersionLabel" label="Version 3.6.1" />
                     </topItems>
                 </group>
                 
@@ -42,17 +42,17 @@
                                   />
                         
                         <checkBox id="EnableFileOpenShortcutCheckbox"
-                                  label="STRG+UMSCHALT+O =&gt;  Klassischer &quot;Datei-&gt;Öffnen&quot;-Dialog"
+                                  label="STRG+UMSCHALT+O =&gt;  Klassischer &quot;Datei-&gt;Öffnen&quot;-Dialog  **"
                                   onAction="OptionalCheckboxAction"
                                   getPressed="OptionalCheckboxGetPressed"
                                   keytip="o"
                                   />
                         
                         <checkBox id="EnableFileSaveAsShortcutCheckbox"
-                                  label="STRG+UMSCHALT+S  =&gt;  Klassischer &quot;Datei-&gt;Speichern als&quot;-Dialog"
+                                  label="STRG+UMSCHALT+S  =&gt;  Klassischer &quot;Datei-&gt;Speichern als&quot;-Dialog  **"
                                   onAction="OptionalCheckboxAction"
                                   getPressed="OptionalCheckboxGetPressed"
-                                  keytip="o"
+                                  keytip="s"
                                   />
                         
                         <checkBox id="EnableSaveAsPDFCheckbox"
@@ -80,6 +80,7 @@
                                       keytip="f"
                                       />
                         </layoutContainer>
+                        <labelControl id="TipDialogLabel" label="**  Für kontextbezogene Startverzeichnisse in Dateidialogen darf 'Optionen->Speichern->Lokaler Standardspeicherort' nicht gesetzt sein." />
                         
                     </topItems>
                 </group>
