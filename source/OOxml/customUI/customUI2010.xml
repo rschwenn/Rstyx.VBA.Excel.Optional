@@ -27,7 +27,7 @@
                 <group id="HeaderGroup" >
                     <topItems>
                         <labelControl id="HintsLabel"   label="Tastenkürzel und Oberflächen-Elemente sowie GeoTools Status" />
-                        <labelControl id="VersionLabel" label="Version 3.6.1" />
+                        <labelControl id="VersionLabel" label="Version 3.6.2" />
                     </topItems>
                 </group>
                 
@@ -134,7 +134,7 @@
                                         expand="horizontal"
                                         getEnabled="GetEnabledButtonStart"
                                         onAction="OptionalButtonAction"
-                                        keytip="s"
+                                        keytip="g"
                                         imageMso="MacroPlay"
                                         screentip="Erkennung der GeoTools"
                                         supertip="Die Datei GeoTools.xlam wird an folgenden Orten gefunden: Excel-AddIn-Liste, zwei Autostart-Ordner, zwei AddIn-Ordner, Ordner des Optional Add-Ins"
